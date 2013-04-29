@@ -1,0 +1,25 @@
+#!/bin/sh
+# recursive search in pdf files 
+# needs poppler-utils
+VERSION=NA                                                                   
+VERSION_DATE=NA
+
+WHAT=$1
+SEARCH_DIR=`pwd`
+if [ "x$2" != "x" ]
+then
+    SEARCH_DIR=$2
+fi
+
+RESULT=""
+FILES=`find $SEARCH_DIR -type f -not -name "\/.git*" |grep ".pdf\$"`
+FILES_COUNT=`echo $FILES | wc -l`
+echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT pdf files "
+for FILE in $FILES ; do
+    RESULT=`pdftotext $FILE - |grep --color=always $WHAT`
+    if [ "$RESULT" != "" ] 
+    then
+      echo "$FILE: $RESULT";
+    fi
+done
+

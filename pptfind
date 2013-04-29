@@ -1,0 +1,25 @@
+#!/bin/sh
+# recursive search in ppt 
+# needs ppthtml
+VERSION=NA                                                                   
+VERSION_DATE=NA
+
+WHAT=$1
+SEARCH_DIR=`pwd`
+if [ "x$2" != "x" ]
+then
+    SEARCH_DIR=$2
+fi
+
+ERRORS=0;
+FILES=`find $SEARCH_DIR -type f -not -name "\/.git*" |grep ".ppt\$"`
+FILES_COUNT=`echo $FILES | wc -l`
+echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT ppt files "
+for FILE in $FILES ; do
+    RESULT=`/usr/bin/ppthtml $FILE | html2text |grep --color=always $WHAT`
+    if [ "$RESULT" != "" ] 
+    then
+      echo "$FILE: $RESULT";
+    fi
+done
+

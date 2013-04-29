@@ -1,4 +1,43 @@
-efind
-=====
+name: efind
+author:  Miroslav Safr <miroslav.safr@gmail.com>
+web: http://safrm,net/projects/efind
+description: extended search for documents
 
-extended search for documents
+content: 
+cppfind .................. c++ files recursive search
+htmlfind ................. html files recursive search
+javafind ................. java files recursive search
+pdffind .................. pdf files recursive search
+pptfind .................. ppt files recursive search
+shfind ................... shell script files recursive search
+txtfind .................. text files recursive search
+
+efind .................... integrated search 
+install.sh ............... install script
+
+usage1:
+#single document type search
+$ cppfind <what> [<where>]
+
+usage2:
+#multiple document type search
+$ efind <what> [<where>]
+
+install ubuntu:
+  1. add release key
+    wget -O - http://safrm.net/releases/Release.key | sudo apt-key add -
+  2. get package
+    wget http://safrm.net/releases/efind/efind_1.0.0-1_all.deb
+  3.install package
+    sudo dpkg -i ./efind_1.0.0-1_all.deb
+
+install fedora/RHEL:
+  1. add release key
+    wget http://safrm.net/releases/Release.key
+    sudo rpm --import Release.key 
+    rm Release.key
+  2. get package
+    wget http://safrm.net/releases/efind/efind-1.0.0-1.noarch.rpm
+  3.install package
+    sudo rpm -i ./efind-1.0.0-1.noarch.rpm
+

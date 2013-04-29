@@ -1,0 +1,7 @@
+debian/files
+debian/changelog
+debian/efind.debhelper.log
+debian/efind.substvars
+debian/efind/*
+rpm/*
+*.changes
