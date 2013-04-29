@@ -1,0 +1,23 @@
+#!/bin/sh
+# recursive search in sh files
+VERSION=NA                                                                   
+VERSION_DATE=NA
+
+WHAT=$1
+SEARCH_DIR=`pwd`
+if [ "x$2" != "x" ]
+then
+    SEARCH_DIR=$2
+fi
+
+FILES=`find $SEARCH_DIR -type f -not -name "\/.git*" |grep ".sh\$"`
+FILES_COUNT=`echo $FILES | wc -l`
+echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT sh files "
+for FILE in $FILES ; do
+    RESULT=`cat $FILE | grep --color=always $WHAT`
+    if [ "$RESULT" != "" ]
+    then
+      echo "$FILE: $RESULT";
+    fi
+done
+

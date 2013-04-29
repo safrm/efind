@@ -1,0 +1,11 @@
+efind /usr/bin/
+cppfind /usr/bin/
+htmlfind /usr/bin/
+javafind /usr/bin/
+pdffind /usr/bin/
+pptfind /usr/bin/
+shfind /usr/bin/
+txtfind /usr/bin/
+
+
+

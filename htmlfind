@@ -1,0 +1,26 @@
+#!/bin/sh
+# recursive search in html files
+# needs html2text
+VERSION=NA                                                                   
+VERSION_DATE=NA
+
+WHAT=$1
+SEARCH_DIR=`pwd`
+if [ "x$2" != "x" ]
+then
+    SEARCH_DIR=$2
+fi
+
+#check installed packages?
+
+FILES=`find $SEARCH_DIR -type f -not -name "\/.git*" | grep -E '\.(html|htm)$'`
+FILES_COUNT=`echo $FILES | wc -l`
+echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT html files "
+for FILE in $FILES ; do
+    RESULT=`html2text $FILE | grep --color=always $WHAT`
+    if [ "$RESULT" != "" ]
+    then
+      echo "$FILE: $RESULT";
+    fi
+done
+

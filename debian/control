@@ -1,0 +1,11 @@
+Source: efind
+Section: utils
+Priority: optional
+Maintainer: Miroslav Safr <miroslav.safr@gmail.com>
+Build-Depends: debhelper (>= 5),
+Standards-Version: 1.0.0
+
+Package: efind
+Architecture: all
+Depends: debhelper (>= 5), grep, html2text, poppler-utils, ppthtml, ${misc:Depends}, ${launcher:Depends}, ${shlibs:Depends}
+Description: extended search for documents
