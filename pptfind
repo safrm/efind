@@ -4,6 +4,13 @@
 VERSION=NA                                                                   
 VERSION_DATE=NA
 
+#check dependencies
+if [ ! -e "/usr/bin/ppthtml" ] 
+then 
+    echo "Not installed ppthtml, exiting.."; 
+    exit 1; 
+fi
+
 WHAT=$1
 SEARCH_DIR=`pwd`
 if [ "x$2" != "x" ]
@@ -11,12 +18,17 @@ then
     SEARCH_DIR=$2
 fi
 
-ERRORS=0;
-FILES=`find $SEARCH_DIR -type f -not -name "\/.git*" |grep ".ppt\$"`
+COLORS=
+if [ `echo $TERM | grep color 1>/dev/null` ]
+then
+    COLORS=" --color=always ";
+fi
+
+FILES=`find $SEARCH_DIR -type f -not -wholename "\/.git*" |grep -i ".ppt\$"`
 FILES_COUNT=`echo $FILES | wc -l`
 echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT ppt files "
 for FILE in $FILES ; do
-    RESULT=`/usr/bin/ppthtml $FILE | html2text |grep --color=always $WHAT`
+    RESULT=`/usr/bin/ppthtml $FILE | html2text |grep $COLORS $WHAT`
     if [ "$RESULT" != "" ] 
     then
       echo "$FILE: $RESULT";

@@ -10,11 +10,17 @@ then
     SEARCH_DIR=$2
 fi
 
-FILES=`find $SEARCH_DIR -type f -not -name "\/.git*" |grep ".txt\$"`
+COLORS=
+if [ `echo $TERM | grep color 1>/dev/null` ]
+then
+    COLORS=" --color=always ";
+fi
+
+FILES=`find $SEARCH_DIR -type f -not -wholename "\/.git*" |grep -i ".txt\$"`
 FILES_COUNT=`echo $FILES | wc -l`
 echo "searching $WHAT in $SEARCH_DIRf  $FILES_COUNT txt files "
 for FILE in $FILES ; do
-    RESULT=`cat $FILE | grep --color=always $WHAT`
+    RESULT=`cat $FILE | grep $COLORS $WHAT`
     if [ "$RESULT" != "" ]
     then
       echo "$FILE: $RESULT";
