@@ -11,13 +11,18 @@ then
     SEARCH_DIR=$2
 fi
 
+COLORS=
+if [ `echo $TERM | grep color 1>/dev/null` ]
+then
+  COLORS=" --color=always ";
+fi
 #check installed packages?
 
-FILES=`find $SEARCH_DIR -type f -not -name "\/.git*" | grep -E '\.(html|htm)$'`
+FILES=`find $SEARCH_DIR -type f -not -wholename "\/.git*" | grep -i -E '\.(html|htm)$'`
 FILES_COUNT=`echo $FILES | wc -l`
 echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT html files "
 for FILE in $FILES ; do
-    RESULT=`html2text $FILE | grep --color=always $WHAT`
+    RESULT=`html2text $FILE | grep $COLORS $WHAT`
     if [ "$RESULT" != "" ]
     then
       echo "$FILE: $RESULT";
