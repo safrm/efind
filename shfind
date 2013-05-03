@@ -16,7 +16,7 @@ then
     COLORS=" --color=always ";
 fi
 
-FILES=`find $SEARCH_DIR -type f -not -wholename "\/.git*" |grep -i ".sh\$"`
+FILES=`find $SEARCH_DIR -type f -not -wholename "\/.git*" |grep -i "\.sh\$"`
 FILES_COUNT=`echo "$FILES" | wc -l `
 echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT sh files "
 for FILE in $FILES ; do
