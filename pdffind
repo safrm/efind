@@ -21,7 +21,7 @@ FILES=`find $SEARCH_DIR -type f -not -wholename "\/.git*" |grep -i ".pdf\$"`
 FILES_COUNT=`echo "$FILES" | wc -l `
 echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT pdf files "
 for FILE in $FILES ; do
-    RESULT=`pdftotext $FILE - |grep $COLORS $WHAT`
+    RESULT=`pdftotext $FILE - | grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
       echo "$FILE: $RESULT";
