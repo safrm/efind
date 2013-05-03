@@ -23,10 +23,9 @@ if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
 
-
 FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.ppt\$"`
 FILES_COUNT=`echo "$FILES" | wc -l `
-echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT ppt files "
+echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT ppt files "
 for FILE in $FILES ; do
     RESULT=`/usr/bin/ppthtml $FILE | html2text |  grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ] 

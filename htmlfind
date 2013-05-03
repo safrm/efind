@@ -20,7 +20,7 @@ fi
 
 FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" | grep -i -E '\.(html|htm)$'`
 FILES_COUNT=`echo "$FILES" | wc -l `
-echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT html files "
+echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT html files "
 for FILE in $FILES ; do
     RESULT=`html2text $FILE | grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ]
