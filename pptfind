@@ -19,10 +19,10 @@ then
 fi
 
 COLORS=
-if [ `echo $TERM | grep color 1>/dev/null` ]
-then
+if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
+
 
 FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.ppt\$"`
 FILES_COUNT=`echo "$FILES" | wc -l `
