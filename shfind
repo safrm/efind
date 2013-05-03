@@ -11,19 +11,48 @@ then
 fi
 
 COLORS=
-if [ `echo $TERM | grep color 1>/dev/null` ]
-then
+#if [ `echo $TERM | grep color 1>/dev/null` ]; then
+if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
 
-FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.sh\$"`
-FILES_COUNT=`echo "$FILES" | wc -l `
-echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT sh files "
+#sh files first
+ALLFILES=`find $SEARCH_DIR -type f -not -wholename "*\/\.git*" | grep -v '^$'`
+FILES=`echo "$ALLFILES" |grep -i ".sh\$"`
+SHFILES_COUNT=`echo "$FILES"  | grep -v '^$'  | wc -l `
+#echo "$FILES \n-----------"
+
+#files without extension
+NOEX_FILES=`echo "$ALLFILES" |grep -v "[^/]*\.[a-z0-9]*$" `
+#echo "$NOEX_FILES \n-----------"
+
+#filter out non-script ones
+for FILE in $NOEX_FILES ; do
+     if grep -r -q "#\!/bin/sh" $FILE ; then
+        NOEX_FILE_SCRIPTS="$NOEX_FILE_SCRIPTS$FILE\n";
+     fi
+done
+#echo "$NOEX_FILE_SCRIPTS \n-----------"
+
+NOEX_COUNT=`echo "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
+
+#put them together
+FILES="$FILES\n$NOEX_FILE_SCRIPTS"
+FILES=`echo "$FILES" | grep -v '^$'`
+FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
+echo "searching '$WHAT' in $SEARCH_DIR  ($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.sh/-) files "
+
 for FILE in $FILES ; do
     RESULT=`cat $FILE | grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ]
     then
-      echo "$FILE: $RESULT";
+
+        #without color support
+        if [ -z "$COLORS" ]; then 
+          echo "$FILE: $RESULT";
+        else
+          echo "\033[01;32m$FILE\033[01;0m: $RESULT";
+        fi
     fi
 done
 
