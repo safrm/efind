@@ -17,7 +17,7 @@ then
 fi
 
 FILES=`find $SEARCH_DIR -type f -not -wholename "\/.git*" |grep -i ".txt\$"`
-FILES_COUNT=`echo $FILES | wc -l`
+FILES_COUNT=`echo "$FILES" | wc -l `
 echo "searching $WHAT in $SEARCH_DIRf  $FILES_COUNT txt files "
 for FILE in $FILES ; do
     RESULT=`cat $FILE | grep $COLORS $WHAT`

@@ -25,7 +25,7 @@ then
 fi
 
 FILES=`find $SEARCH_DIR -type f -not -wholename "\/.git*" |grep -i ".ppt\$"`
-FILES_COUNT=`echo $FILES | wc -l`
+FILES_COUNT=`echo "$FILES" | wc -l `
 echo "searching $WHAT in $SEARCH_DIR  $FILES_COUNT ppt files "
 for FILE in $FILES ; do
     RESULT=`/usr/bin/ppthtml $FILE | html2text |grep $COLORS $WHAT`
