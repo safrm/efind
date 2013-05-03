@@ -1,5 +1,5 @@
 #!/bin/sh
-# recursive search in sh files
+# recursive search in sh files and sh scripts without extension
 VERSION=NA                                                                   
 VERSION_DATE=NA
 
