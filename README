@@ -11,6 +11,7 @@ pdffind .................. pdf files recursive search
 pptfind .................. ppt files recursive search
 shfind ................... shell script files recursive search
 txtfind .................. text files recursive search
+xmlfind .................. xml files recursive search
 
 efind .................... integrated search 
 install.sh ............... install script
