@@ -5,7 +5,8 @@ description: extended search for documents
 
 content: 
 cppfind .................. c++ files recursive search
-htmlfind ................. html files recursive search
+docfind .................. doc docx rtf odt files recursive search
+htmlfind ................. htm html files recursive search
 javafind ................. java files recursive search
 pdffind .................. pdf files recursive search
 pptfind .................. ppt files recursive search
@@ -42,3 +43,9 @@ install fedora/RHEL:
   3.install package
     sudo rpm -i ./efind-1.0.0-1.noarch.rpm
 
+
+testing:
+string2find
+test/
+
+String2find

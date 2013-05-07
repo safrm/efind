@@ -1,0 +1,36 @@
+#!/bin/sh
+# recursive search in docx 
+# needs libreoffice and unoconv
+VERSION=NA                                                                   
+VERSION_DATE=NA
+
+#check dependencies
+if [ ! -e "/usr/bin/unoconv" ] 
+then 
+    echo "Not installed unoconv, exiting.."; 
+    exit 1; 
+fi
+
+WHAT=$1
+SEARCH_DIR=`pwd`
+if [ "x$2" != "x" ]
+then
+    SEARCH_DIR=$2
+fi
+
+COLORS=
+if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
+    COLORS=" --color=always ";
+fi
+
+FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i -E '\.(doc|docx|rtf|odt)$'`
+FILES_COUNT=`echo "$FILES" | wc -l `
+echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT docx files "
+for FILE in $FILES ; do
+    RESULT=`unoconv  -f txt --stdout  $FILE  2> /dev/null |  grep $COLORS -E "$WHAT"`
+    if [ "$RESULT" != "" ] 
+    then
+      echo "$FILE: $RESULT";
+    fi
+done
+
