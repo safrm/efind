@@ -40,6 +40,9 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE
 install -m 755 ./cppfind %{buildroot}/usr/bin/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/cppfind && rm -f %{buildroot}/usr/bin/cppfind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/cppfind && rm -f %{buildroot}/usr/bin/cppfind.bkp
+install -m 755 ./docfind %{buildroot}/usr/bin/
+sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/docfind && rm -f %{buildroot}/usr/bin/docfind.bkp
+sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/docfind && rm -f %{buildroot}/usr/bin/docfind.bkp
 install -m 755 ./htmlfind %{buildroot}/usr/bin/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/htmlfind && rm -f %{buildroot}/usr/bin/htmlfind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/htmlfind && rm -f %{buildroot}/usr/bin/htmlfind.bkp
@@ -74,6 +77,7 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE
 # >> files
 %{_bindir}/efind
 %{_bindir}/cppfind
+%{_bindir}/docfind
 %{_bindir}/htmlfind
 %{_bindir}/javafind
 %{_bindir}/pdffind
