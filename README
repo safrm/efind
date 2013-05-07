@@ -5,11 +5,11 @@ description: extended search for documents
 
 content: 
 cppfind .................. c++ files recursive search
-docfind .................. doc docx rtf odt files recursive search
-htmlfind ................. htm html files recursive search
+docfind .................. doc, docx, rtf, odt files recursive search
+htmlfind ................. htm,html files recursive search
 javafind ................. java files recursive search
 pdffind .................. pdf files recursive search
-pptfind .................. ppt files recursive search
+pptfind .................. ppt, odp files recursive search
 shfind ................... shell script files recursive search
 txtfind .................. text files recursive search
 xmlfind .................. xml files recursive search

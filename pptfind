@@ -1,13 +1,12 @@
 #!/bin/sh
 # recursive search in ppt 
-# needs ppthtml
 VERSION=NA                                                                   
 VERSION_DATE=NA
 
 #check dependencies
-if [ ! -e "/usr/bin/ppthtml" ] 
+if [ ! -e "/usr/bin/unoconv" ] 
 then 
-    echo "Not installed ppthtml, exiting.."; 
+    echo "Not installed unoconv, exiting.."; 
     exit 1; 
 fi
 
@@ -23,14 +22,25 @@ if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
 
-FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.ppt\$"`
+
+#FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.ppt\$"`
+#FILES_COUNT=`echo "$FILES" | wc -l `
+#echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT ppt files "
+#for FILE in $FILES ; do
+#    RESULT=`/usr/bin/ppthtml $FILE | html2text |  grep $COLORS -E "$WHAT"`
+#    if [ "$RESULT" != "" ] 
+#    then
+#      echo "$FILE: $RESULT";
+#    fi
+#done
+
+FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i -E '\.(ppt|odp)$'`
 FILES_COUNT=`echo "$FILES" | wc -l `
-echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT ppt files "
+echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT ppt,odp files "
 for FILE in $FILES ; do
-    RESULT=`/usr/bin/ppthtml $FILE | html2text |  grep $COLORS -E "$WHAT"`
+    RESULT=`unoconv  -f xhtml --stdout $FILE  2> /dev/null | html2text |  grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
       echo "$FILE: $RESULT";
     fi
 done
-
