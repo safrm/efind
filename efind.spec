@@ -58,7 +58,9 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE
 install -m 755 ./txtfind %{buildroot}/usr/bin/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/txtfind && rm -f %{buildroot}/usr/bin/txtfind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/txtfind && rm -f %{buildroot}/usr/bin/txtfind.bkp
-
+install -m 755 ./xmlfind %{buildroot}/usr/bin/
+sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/xmlfind && rm -f %{buildroot}/usr/bin/xmlfind.bkp
+sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/xmlfind && rm -f %{buildroot}/usr/bin/xmlfind.bkp
 # >> install post
 # << install post
 
@@ -78,6 +80,7 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE
 %{_bindir}/pptfind
 %{_bindir}/shfind
 %{_bindir}/txtfind
+%{_bindir}/xmlfind
 # << files
 
 
