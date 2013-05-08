@@ -22,7 +22,7 @@ if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
 
-
+#alternative search using pptthml
 #FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.ppt\$"`
 #FILES_COUNT=`echo "$FILES" | wc -l `
 #echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT ppt files "
@@ -34,13 +34,20 @@ fi
 #    fi
 #done
 
-FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i -E '\.(ppt|odp)$'`
+FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i -E '\.(ppt|odp|pptx)$'`
 FILES_COUNT=`echo "$FILES" | wc -l `
-echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT ppt,odp files "
+echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m  \033[46m$FILES_COUNT ppt,pptx,odp\033[0m files "
 for FILE in $FILES ; do
-    RESULT=`unoconv  -f xhtml --stdout $FILE  2> /dev/null | html2text |  grep $COLORS -E "$WHAT"`
+    if [ ! -z `echo "$FILE" |grep -i ".pptx\$"` ];then
+        #unpack to xml | remove tags | clean empty lines
+        RESULT=`unzip -p $FILE | sed -e 's/<[^>]*>//g' | sed '/^\s*$/d' |  grep $COLORS -E "$WHAT"`
+    else
+        RESULT=`unoconv  -f xhtml --stdout $FILE  2> /dev/null | html2text |  grep $COLORS -E "$WHAT"`
+    fi
     if [ "$RESULT" != "" ] 
     then
-      echo "$FILE: $RESULT";
+      echo "\033[34m$FILE\033[0m: $RESULT";
     fi
 done
+
+

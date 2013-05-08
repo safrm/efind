@@ -7,6 +7,6 @@ Standards-Version: 1.0.0
 
 Package: efind
 Architecture: all
-Depends: grep, html2text, poppler-utils,  ${misc:Depends}, ${launcher:Depends}, ${shlibs:Depends}
+Depends: grep, html2text, unzip, sed, poppler-utils,  ${misc:Depends}, ${launcher:Depends}, ${shlibs:Depends}
 Recommends: ppthtml, xml2, unoconv
 Description: extended search for documents
