@@ -34,10 +34,10 @@ fi
 #    fi
 #done
 
-FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i -E '\.(ppt|odp|pptx)$'`
-FILES_COUNT=`echo "$FILES" | wc -l `
+FILES=$(find $SEARCH_DIR -type f -not -wholename "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(ppt|odp|pptx)$')
+FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l `
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT ppt,pptx,odp\033[0m files"
-for FILE in $FILES ; do
+echo "${FILES}" | while IFS='\n' read -r FILE ; do
     if [ ! -z `echo "$FILE" |grep -i ".pptx\$"` ];then
         #unpack to xml | remove tags | clean empty lines
         RESULT=`unzip -p $FILE | sed -e 's/<[^>]*>//g' | sed '/^\s*$/d' |  grep $COLORS -E "$WHAT"`
