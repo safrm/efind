@@ -11,7 +11,6 @@ then
 fi
 
 COLORS=
-#if [ `echo $TERM | grep color 1>/dev/null` ]; then
 if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
@@ -40,7 +39,7 @@ NOEX_COUNT=`echo "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
 FILES="$FILES\n$NOEX_FILE_SCRIPTS"
 FILES=`echo "$FILES" | grep -v '^$'`
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
-echo "searching '$WHAT' in $SEARCH_DIR  ($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.sh/-) files "
+echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.sh/-) files\033[0m"
 
 for FILE in $FILES ; do
     RESULT=`cat $FILE | grep $COLORS -E "$WHAT"`

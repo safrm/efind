@@ -24,11 +24,11 @@ fi
 
 FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.xml\$"`
 FILES_COUNT=`echo "$FILES" | wc -l `
-echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT xml files "
+echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT xml\033[0m files"
 for FILE in $FILES ; do
     RESULT=`xml2 < $FILE |  grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
-      echo "$FILE: $RESULT";
+      echo "\033[34m$FILE\033[0m: $RESULT";
     fi
 done

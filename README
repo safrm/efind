@@ -49,3 +49,18 @@ string2find
 test/
 
 String2find
+
+
+efind $ ./shfind  "search in"
+searching 'search in' in efind (1/10)=11 (.sh/-) files
+/media/p/work/mirek-open/efind/cppfind: # recursive search in cpp,h files
+/media/p/work/mirek-open/efind/efind: # extended recursive search in pdf, html, ppt files
+/media/p/work/mirek-open/efind/htmlfind: # recursive search in html files
+/media/p/work/mirek-open/efind/javafind: # recursive search in java files
+/media/p/work/mirek-open/efind/pdffind: # recursive search in pdf files 
+/media/p/work/mirek-open/efind/shfind: # recursive search in sh files and sh scripts without extension
+/media/p/work/mirek-open/efind/pptfind: # recursive search in ppt 
+/media/p/work/mirek-open/efind/txtfind: # recursive search in txt files
+/media/p/work/mirek-open/efind/xmlfind: # recursive search in xml 
+/media/p/work/mirek-open/efind/docfind: # recursive search in docx 
+
