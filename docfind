@@ -22,11 +22,12 @@ COLORS=
 if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
+FILES=$(find $SEARCH_DIR -type f -not -wholename "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(doc|docx|rtf|odt)$')
 
-FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i -E '\.(doc|docx|rtf|odt)$'`
-FILES_COUNT=`echo "$FILES" | wc -l `
+FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l `
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT doc,docx,rtf,odt\033[0m files"
-for FILE in $FILES ; do
+
+echo "${FILES}" | while IFS='\n' read -r FILE ; do
     RESULT=`unoconv  -f txt --stdout  $FILE  2> /dev/null |  grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then

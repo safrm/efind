@@ -16,9 +16,9 @@ if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
 
-FILES=$(find $SEARCH_DIR -type f -not -wholename "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(html|htm)$'| xargs -I _file echo -e "_file" )
+FILES=$(find $SEARCH_DIR -type f -not -wholename "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(html|htm)$')
 
-FILES_COUNT=`echo "$FILES" | wc -l `
+FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l `
 
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT htm,html\033[0m files"
 
