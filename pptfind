@@ -38,7 +38,7 @@ FILES=$(find $SEARCH_DIR -type f -not -wholename "*\/.git*" -printf '%p\n' | gre
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l `
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT ppt,pptx,odp\033[0m files"
 echo "${FILES}" | while IFS='\n' read -r FILE ; do
-    if [ ! -z `echo "$FILE" |grep -i ".pptx\$"` ];then
+    if [ ! -z `echo "$FILE" | grep -i -q '.pptx\$'` ]; then
         #unpack to xml | remove tags | clean empty lines
         RESULT=`unzip -p $FILE | sed -e 's/<[^>]*>//g' | sed '/^\s*$/d' |  grep $COLORS -E "$WHAT"`
     else
