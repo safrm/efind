@@ -9,17 +9,20 @@ usage() {
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
     echo " --help ............................. shows command line help"
-    echo " -cs ................................ case sensitive search (by default it is insensitive)"
+    echo " -cs ................................ case sensitive content search (by default it is insensitive)"
+    echo " -nf --no-filenames) ................ disable searching in filenames (by default enabled)"
     echo " "
 }
 START_TIME=`date +'%s'`
 CASE_SENS=0
 TOTAL_COUNT=0
 FOUND_COUNT=0
+SEARCH_FILENAMES=1
 while [ $# -gt 0 ]; do
   case "$1" in
     --help) usage exit ;;
-    -cs) CASE_SENS=1;;
+    -cs) CASE_SENS=1 ;;
+    -nf | --no-filenames )  SEARCH_FILENAMES=0 ;;
     * )      
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 
@@ -73,7 +76,21 @@ fi
 
 FILES=$(find $SEARCH_DIR -type f -not -wholename "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(ppt|odp|pptx)$')
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l `
-echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT ppt,pptx,odp\033[0m files, CS:$CASE_SENS"
+echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT ppt,pptx,odp\033[0m files, CS:$CASE_SENS FS:$SEARCH_FILENAMES "
+
+#filenames search
+if [ $SEARCH_FILENAMES -eq 1 ]; then
+echo "${FILES}" | while IFS='\n' read -r FILE ; do
+	
+# if [ ! -z `echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"` ]; then
+#      echo "\033[34m$FILE\033[0m";
+# fi
+	# only file basename     
+	echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"
+done
+fi
+
+#content search
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
     if [ ! -z `echo "$FILE" | grep -i -q '.pptx\$'` ]; then
@@ -90,7 +107,7 @@ echo "${FILES}" | \
 done
 
 ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
-echo "$BASENAME found $FOUND_COUNT from $FILES_COUNT files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+echo "$BASENAME found \033[42m$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
 }
 
 
