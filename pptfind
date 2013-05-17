@@ -1,7 +1,45 @@
 #!/bin/sh
-# recursive search in ppt 
+# recursive search in presentations ppt , pptx, odp
 VERSION=NA                                                                   
 VERSION_DATE=NA
+BASENAME=`basename $0`
+usage() {
+    echo "$BASENAME ${VERSION}"
+    echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
+    echo " PATTERN ............................ string (requires \"\" if contains spaces) "
+    echo " options: "
+    echo " --help ............................. shows command line help"
+    echo " -cs ................................ case sensitive search (by default it is insensitive)"
+    echo " "
+}
+START_TIME=`date +'%s'`
+CASE_SENS=0
+TOTAL_COUNT=0
+FOUND_COUNT=0
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --help) usage exit ;;
+    -cs) CASE_SENS=1;;
+    * )      
+        if [ -z "$WHAT" ]; then  
+            WHAT=$1 ; 
+        elif [ -z "$SEARCH_DIR" ]; then
+            SEARCH_DIR=$1 ;
+        else
+            echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."; exit 1;        
+        fi 
+        ;;
+  esac
+  shift
+done
+
+if [ -z "$WHAT" ]; then 
+    echo "You have to specify searching pattern, exiting.."; exit 1;
+fi
+
+if [ -z "$SEARCH_DIR" ] || [ ! -d "$SEARCH_DIR" ]; then
+	SEARCH_DIR="./"
+fi
 
 #check dependencies
 if [ ! -e "/usr/bin/unoconv" ] 
@@ -10,16 +48,15 @@ then
     exit 1; 
 fi
 
-WHAT=$1
-SEARCH_DIR=`pwd`
-if [ "x$2" != "x" ]
-then
-    SEARCH_DIR=$2
-fi
-
+#check if terminal supports colors 
 COLORS=
 if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
+fi
+#case sensitive flag - by default ignore cases
+CSF="-i "
+if [ $CASE_SENS -eq 1 ]; then
+CSF="" 
 fi
 
 #alternative search using pptthml
@@ -36,18 +73,24 @@ fi
 
 FILES=$(find $SEARCH_DIR -type f -not -wholename "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(ppt|odp|pptx)$')
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l `
-echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT ppt,pptx,odp\033[0m files"
-echo "${FILES}" | while IFS='\n' read -r FILE ; do
+echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT ppt,pptx,odp\033[0m files, CS:$CASE_SENS"
+echo "${FILES}" | \
+{ while IFS='\n' read -r FILE ; do
     if [ ! -z `echo "$FILE" | grep -i -q '.pptx\$'` ]; then
         #unpack to xml | remove tags | clean empty lines
-        RESULT=`unzip -p $FILE | sed -e 's/<[^>]*>//g' | sed '/^\s*$/d' |  grep $COLORS -E "$WHAT"`
+        RESULT=`unzip -p $FILE | sed -e 's/<[^>]*>//g' | sed '/^\s*$/d' |  grep $COLORS $CSF -E "$WHAT"`
     else
-        RESULT=`unoconv  -f xhtml --stdout $FILE  2> /dev/null | html2text |  grep $COLORS -E "$WHAT"`
+        RESULT=`unoconv  -f xhtml --stdout $FILE  2> /dev/null | html2text |  grep $COLORS $CSF -E "$WHAT"`
     fi
     if [ "$RESULT" != "" ] 
     then
       echo "\033[34m$FILE\033[0m: $RESULT";
+      FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
     fi
 done
+
+ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
+echo "$BASENAME found $FOUND_COUNT from $FILES_COUNT files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+}
 
 
