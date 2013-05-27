@@ -1,7 +1,7 @@
 name: efind
 author:  Miroslav Safr <miroslav.safr@gmail.com>
 web: http://safrm,net/projects/efind
-description: extended search for documents
+description: extended recursive search for documents
 
 content: 
 cppfind .................. c++ files recursive search
