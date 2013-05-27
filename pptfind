@@ -1,11 +1,15 @@
 #!/bin/sh
-# recursive search in presentations ppt , pptx, odp
+#extended recursive search for documents - presentations (ppt, pptx, odp) 
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com>
+
 VERSION=NA                                                                   
 VERSION_DATE=NA
 BASENAME=`basename $0`
 usage() {
-    echo "$BASENAME ${VERSION}"
-    echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
+    echo "$BASENAME ${VERSION} - extended recursive search for presentations (ppt, pptx, odp)"
+    echo " http://safrm,net/projects/efind"
+    echo "Usage: $BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
     echo " --help ............................. shows command line help"
@@ -59,7 +63,7 @@ fi
 #case sensitive flag - by default ignore cases
 CSF="-i "
 if [ $CASE_SENS -eq 1 ]; then
-CSF="" 
+    CSF="" 
 fi
 
 #alternative search using pptthml
