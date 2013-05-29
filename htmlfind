@@ -2,7 +2,8 @@
 #extended recursive search for documents - html files (htm, html)
 #web: http://safrm.net/projects/efind
 #author: Miroslav Safr <miroslav.safr@gmail.com> 
-# needs html2text
+VERSION=NA                                                                   
+VERSION_DATE=NA
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME ${VERSION} - extended recursive search for html files (htm,html)"
@@ -52,6 +53,14 @@ COLORS=
 if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
+
+#check dependencies
+if [ ! -e "/usr/bin/html2text" ] 
+then 
+    echo "Not installed html2text, exiting.."; 
+    exit 1; 
+fi
+
 #case sensitive flag - by default ignore cases
 CSF="-i "
 if [ $CASE_SENS -eq 1 ]; then
