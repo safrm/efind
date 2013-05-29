@@ -30,7 +30,7 @@ FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l `
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT doc,docx,rtf,odt\033[0m files"
 
 echo "${FILES}" | while IFS='\n' read -r FILE ; do
-    RESULT=`unoconv  -f txt --stdout  $FILE  2> /dev/null |  grep $COLORS -E "$WHAT"`
+    RESULT=`unoconv  -f txt --stdout  "$FILE"  2> /dev/null |  grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
       echo "\033[34m$FILE\033[0m: $RESULT";
