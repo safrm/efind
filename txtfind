@@ -71,18 +71,9 @@ done
 fi
 
 #content search
-for FILE in $FILES ; do
-    RESULT=`cat $FILE | grep $COLORS -E "$WHAT"`
-    if [ "$RESULT" != "" ]
-    then
-      echo "\033[34m$FILE\033[0m: $RESULT";
-    fi
-done
-
-#content search
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
-    RESULT=`cat "$FILE" | grep $COLORS -E "$WHAT"`
+    RESULT=`cat "$FILE" | grep $COLORS $CSF -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
       echo "\033[34m$FILE\033[0m: $RESULT";
