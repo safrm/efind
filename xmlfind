@@ -60,6 +60,7 @@ COLORS=
 if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
     COLORS=" --color=always ";
 fi
+
 #case sensitive flag - by default ignore cases
 CSF="-i "
 if [ $CASE_SENS -eq 1 ]; then
