@@ -2,7 +2,6 @@
 #extended recursive search for documents - presentations (ppt, pptx, odp) 
 #web: http://safrm.net/projects/efind
 #author: Miroslav Safr <miroslav.safr@gmail.com>
-
 VERSION=NA                                                                   
 VERSION_DATE=NA
 BASENAME=`basename $0`
