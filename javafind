@@ -72,7 +72,6 @@ echo "${FILES}" | while IFS='\n' read -r FILE ; do
     if [ "$RESULT" != "" ] 
     then
       echo "\033[34m$FILE\033[0m: $RESULT";
-      FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
     fi
 done
 fi
