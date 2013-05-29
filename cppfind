@@ -1,5 +1,7 @@
 #!/bin/sh
-# recursive search in cpp,h files
+#extended recursive search for documents - c++ files (cpp,h)
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com> 
 VERSION=NA                                                                   
 VERSION_DATE=NA
 
