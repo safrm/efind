@@ -65,18 +65,6 @@ if [ $CASE_SENS -eq 1 ]; then
     CSF="" 
 fi
 
-#alternative search using pptthml
-#FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.ppt\$"`
-#FILES_COUNT=`echo "$FILES" | wc -l `
-#echo "searching '$WHAT' in $SEARCH_DIR  $FILES_COUNT ppt files "
-#for FILE in $FILES ; do
-#    RESULT=`/usr/bin/ppthtml $FILE | html2text |  grep $COLORS -E "$WHAT"`
-#    if [ "$RESULT" != "" ] 
-#    then
-#      echo "$FILE: $RESULT";
-#    fi
-#done
-
 FILES=$(find $SEARCH_DIR -type f -not -wholename "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(ppt|odp|pptx)$')
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l `
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT ppt,pptx,odp\033[0m files, CS:$CASE_SENS FS:$SEARCH_FILENAMES "
@@ -92,8 +80,6 @@ echo "${FILES}" | while IFS='\n' read -r FILE ; do
     fi
 done
 fi
-
-
 
 #content search
 echo "${FILES}" | \
