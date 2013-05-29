@@ -44,7 +44,7 @@ FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.sh/-)\033[0m files "
 
 for FILE in $FILES ; do
-    RESULT=`cat $FILE | grep $COLORS -E "$WHAT"`
+    RESULT=`cat "$FILE" | grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ]
     then
 
