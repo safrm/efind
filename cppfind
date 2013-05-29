@@ -64,7 +64,6 @@ FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |  grep -i -E '\.(h|c
 FILES_COUNT=`echo "$FILES" | wc -l `
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT cpp,h\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES "
 
-
 #filenames search
 if [ $SEARCH_FILENAMES -eq 1 ]; then
 echo "${FILES}" | while IFS='\n' read -r FILE ; do
