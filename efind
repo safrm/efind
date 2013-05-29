@@ -1,5 +1,7 @@
 #!/bin/sh
-# extended recursive search in pdf, html, ppt files
+#extended recursive search for documents - combined files (html, doc, pdf, ppt, txt)
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com> 
 VERSION=NA                                                                   
 VERSION_DATE=NA
 
@@ -9,6 +11,10 @@ if [ "x$2" != "x" ]
 then
     SEARCH_DIR=$2
 fi
+echo "==================================================="
+echo "TXT files=========================================="
+txtfind $1 $2
+
 echo "==================================================="
 echo "HTML files========================================="
 htmlfind $1 $2
@@ -22,5 +28,6 @@ echo "PPT files=========================================="
 pptfind $1 $2
 
 echo "==================================================="
-echo "TXT files=========================================="
-txtfind $1 $2
+echo "DOC files=========================================="
+docfind $1 $2
+
