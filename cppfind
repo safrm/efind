@@ -21,6 +21,7 @@ START_TIME=`date +'%s'`
 CASE_SENS=0
 TOTAL_COUNT=0
 FOUND_COUNT=0
+FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -65,15 +66,26 @@ FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT cpp,h\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES "
 
 #filenames search
+FIFO=/tmp/FOUND_COUNT_FN.$$
+trap 'rm -f $FIFO' 0
+mkfifo $FIFO
 if [ $SEARCH_FILENAMES -eq 1 ]; then
-echo "${FILES}" | while IFS='\n' read -r FILE ; do
-	# only file basename     
+echo "${FILES}" | \
+{ while IFS='\n' read -r FILE ; do
+	# only file basename    
 	RESULT=`echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
       echo "\033[34m$FILE\033[0m: $RESULT";
+      FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
     fi
 done
+echo "$FOUND_COUNT_FN" > $FIFO &
+}
+
+#pass the value back to script
+read FOUND_COUNT_FN < $FIFO
+wait $!
 fi
 
 #content search
@@ -88,6 +100,6 @@ echo "${FILES}" | \
 done
 
 ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
-echo "$BASENAME found \033[42m$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
 }
 
