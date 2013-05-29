@@ -1,5 +1,7 @@
 #!/bin/sh
-# recursive search in java files
+#extended recursive search for documents - java files (java)
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com> 
 VERSION=NA                                                                   
 VERSION_DATE=NA
 

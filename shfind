@@ -1,5 +1,7 @@
 #!/bin/sh
-# recursive search in sh files and sh scripts without extension
+#extended recursive search for documents - sh script files (sh, sh scripts without extension)
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com> 
 VERSION=NA                                                                   
 VERSION_DATE=NA
 

@@ -1,5 +1,7 @@
 #!/bin/sh
-# recursive search in html files
+#extended recursive search for documents - html files (htm, html)
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com> 
 # needs html2text
 VERSION=NA                                                                   
 VERSION_DATE=NA

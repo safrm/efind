@@ -1,5 +1,7 @@
 #!/bin/sh
-# recursive search in pdf files 
+#extended recursive search for documents - pdf files (pdf)
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com> 
 # needs poppler-utils
 VERSION=NA                                                                   
 VERSION_DATE=NA

@@ -1,5 +1,7 @@
 #!/bin/sh
-# recursive search in docx 
+#extended recursive search for documents - document files (doc,docx,rtf,odt)
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com> 
 # needs libreoffice and unoconv
 VERSION=NA                                                                   
 VERSION_DATE=NA
