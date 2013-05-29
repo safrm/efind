@@ -82,7 +82,7 @@ done
 #content search
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
-    RESULT=`cat $FILE | grep $COLORS -E "$WHAT"`
+    RESULT=`cat "$FILE" | grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
       echo "\033[34m$FILE\033[0m: $RESULT";
