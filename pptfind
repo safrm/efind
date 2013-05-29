@@ -84,14 +84,16 @@ echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FI
 #filenames search
 if [ $SEARCH_FILENAMES -eq 1 ]; then
 echo "${FILES}" | while IFS='\n' read -r FILE ; do
-	
-# if [ ! -z `echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"` ]; then
-#      echo "\033[34m$FILE\033[0m";
-# fi
 	# only file basename     
-	echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"
+	RESULT=`echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+    if [ "$RESULT" != "" ] 
+    then
+      echo "\033[34m$FILE\033[0m: $RESULT";
+    fi
 done
 fi
+
+
 
 #content search
 echo "${FILES}" | \
