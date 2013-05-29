@@ -101,7 +101,7 @@ echo "${FILES}" | \
         #unpack to xml | remove tags | clean empty lines
         RESULT=`unzip -p $FILE | sed -e 's/<[^>]*>//g' | sed '/^\s*$/d' |  grep $COLORS $CSF -E "$WHAT"`
     else
-        RESULT=`unoconv  -f xhtml --stdout $FILE  2> /dev/null | html2text |  grep $COLORS $CSF -E "$WHAT"`
+        RESULT=`unoconv  -f xhtml --stdout "$FILE"  2> /dev/null | html2text |  grep $COLORS $CSF -E "$WHAT"`
     fi
     if [ "$RESULT" != "" ] 
     then

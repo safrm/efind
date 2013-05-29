@@ -22,7 +22,7 @@ FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |  grep -i -E '\.(h|c
 FILES_COUNT=`echo "$FILES" | wc -l `
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT cpp,h\033[0m files"
 for FILE in $FILES ; do
-    RESULT=`cat $FILE | grep $COLORS -E "$WHAT"`
+    RESULT=`cat "$FILE" | grep $COLORS -E "$WHAT"`
     if [ "$RESULT" != "" ]
     then
       echo "\033[34m$FILE\033[0m: $RESULT";
