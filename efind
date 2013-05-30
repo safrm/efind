@@ -4,30 +4,41 @@
 #author: Miroslav Safr <miroslav.safr@gmail.com> 
 VERSION=NA                                                                   
 VERSION_DATE=NA
+BASENAME=`basename $0`
+usage() {
+    echo "$BASENAME ${VERSION} - extended recursive search for sh scripts (sh, sh scripts without extension)"
+    echo " http://safrm,net/projects/efind/"
+    echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
+    echo " PATTERN ............................ string (requires \"\" if contains spaces) "
+    echo " options: "
+    echo " --help ............................. shows command line help"
+    echo " -cs ................................ case sensitive content search (by default it is insensitive)"
+    echo " -nf --no-filenames  ................ disable searching in filenames (by default enabled)"
+    echo " -nc --no-content ................... disable searching in file content (by default enabled)"
+    echo " "
+}
 
-WHAT=$1
-SEARCH_DIR=`pwd`
-if [ "x$2" != "x" ]
+if [ "x$1" = "x--help" ]
 then
-    SEARCH_DIR=$2
+    usage 
+	exit
 fi
-echo "==================================================="
+
+START_TIME=`date +'%s'`
+
 echo "TXT files=========================================="
-txtfind $1 $2
+txtfind "$@"
 
-echo "==================================================="
 echo "HTML files========================================="
-htmlfind $1 $2
+htmlfind "$@"
 
-echo "==================================================="
 echo "PDF files=========================================="
-pdffind $1 $2
+pdffind "$@"
 
-echo "==================================================="
 echo "PPT files=========================================="
-pptfind $1 $2
+pptfind "$@"
 
-echo "==================================================="
 echo "DOC files=========================================="
-docfind $1 $2
+docfind "$@"
 
+echo "$BASENAME took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
