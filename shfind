@@ -73,13 +73,18 @@ NOEX_FILES=`echo "$ALLFILES" |grep -v "[^/]*\.[a-z0-9]*$" `
 #echo "$NOEX_FILES \n-----------"
 
 #filter out non-script ones - don't support whitespaces atm
-for FILE in $NOEX_FILES ; do
+FIFO2=/tmp/NOEX_FILE_SCRIPTS.$$
+trap 'rm -f $FIFO2' 0
+mkfifo $FIFO2
+echo "${NOEX_FILES}" | while IFS='\n' read -r FILE ; do
      if grep -r -q "#\!/bin/sh" "$FILE" ; then
-        NOEX_FILE_SCRIPTS="$NOEX_FILE_SCRIPTS$FILE\n";
+		echo "$FILE" >> $FIFO2 &
      fi
-  done
+done
+#pass the value back to script
+NOEX_FILE_SCRIPTS=`cat $FIFO2`
+wait $!
 #echo "$NOEX_FILE_SCRIPTS \n-----------"
-
 NOEX_COUNT=`echo "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
 
 #put them together

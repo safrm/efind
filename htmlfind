@@ -13,7 +13,8 @@ usage() {
     echo " options: "
     echo " --help ............................. shows command line help"
     echo " -cs ................................ case sensitive content search (by default it is insensitive)"
-    echo " -nf --no-filenames) ................ disable searching in filenames (by default enabled)"
+    echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
+    echo " -nc --no-content ................... disable searching in file content (by default enabled)"
     echo " "
 }
 
@@ -23,11 +24,13 @@ TOTAL_COUNT=0
 FOUND_COUNT=0
 FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
+SEARCH_CONTENT=1
 while [ $# -gt 0 ]; do
   case "$1" in
     --help) usage exit ;;
     -cs) CASE_SENS=1 ;;
     -nf | --no-filenames )  SEARCH_FILENAMES=0 ;;
+    -nc | --no-content )  SEARCH_CONTENT=0 ;;
     * )      
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 
@@ -86,8 +89,8 @@ echo "${FILES}" | \
       echo "\033[34m$FILE\033[0m: $RESULT";
      FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
     fi
-done
-echo "$FOUND_COUNT_FN" > $FIFO &
+  done
+  echo "$FOUND_COUNT_FN" > $FIFO &
 }
 
 #pass the value back to script
@@ -96,6 +99,7 @@ wait $!
 fi
 
 #content search
+if [ $SEARCH_CONTENT -eq 1 ]; then
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
     RESULT=`html2text "$FILE" | grep $COLORS $CSF -E "$WHAT"`
@@ -104,10 +108,10 @@ echo "${FILES}" | \
       echo "\033[34m$FILE\033[0m: $RESULT";
       FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
     fi
-done
+  done
 
-ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
-echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+  ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
+  echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
 }
-
+fi
 
