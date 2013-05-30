@@ -61,7 +61,7 @@ fi
 
 FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |grep -i "\.txt\$"`
 FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
-echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT txt\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES "
+echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT txt\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
 FIFO=/tmp/FOUND_COUNT_FN.$$
