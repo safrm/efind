@@ -41,4 +41,5 @@ pptfind "$@"
 echo "DOC files=========================================="
 docfind "$@"
 
+ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
 echo "$BASENAME took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
