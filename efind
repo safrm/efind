@@ -15,13 +15,14 @@ usage() {
     echo " -cs ................................ case sensitive content search (by default it is insensitive)"
     echo " -nf --no-filenames  ................ disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
+    echo " -no --name-only .................... print only filenames (by default disabled)"
     echo " "
 }
 
 if [ "x$1" = "x--help" ]
 then
     usage 
-	exit
+	exit 1;
 fi
 
 START_TIME=`date +'%s'`

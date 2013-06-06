@@ -16,6 +16,7 @@ usage() {
     echo " -cs ................................ case sensitive content search (by default it is insensitive)"
     echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
+    echo " -no --name-only .................... print only filenames (by default disabled)"
     echo " "
 }
 
@@ -26,12 +27,14 @@ FOUND_COUNT=0
 FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
 SEARCH_CONTENT=1
+FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --help) usage exit ;;
     -cs) CASE_SENS=1 ;;
     -nf | --no-filenames )  SEARCH_FILENAMES=0 ;;
     -nc | --no-content )  SEARCH_CONTENT=0 ;;
+    -no | --name-only )  FILENAME_ONLY=1 ;;
     * )      
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 
@@ -87,7 +90,11 @@ echo "${FILES}" | \
 	RESULT=`echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
-      echo "\033[34m$FILE\033[0m: $RESULT";
+        if [ $FILENAME_ONLY -eq 1 ]; then
+          echo "\033[34m$FILE\033[0m";
+        else
+          echo "\033[34m$FILE\033[0m: $RESULT";
+        fi
       FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
     fi
   done
@@ -106,7 +113,11 @@ echo "${FILES}" | \
     RESULT=`unoconv  -f txt --stdout  "$FILE"  2> /dev/null |  grep $COLORS $CSF -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
-      echo "\033[34m$FILE\033[0m: $RESULT";
+        if [ $FILENAME_ONLY -eq 1 ]; then
+          echo "\033[34m$FILE\033[0m";
+        else
+          echo "\033[34m$FILE\033[0m: $RESULT";
+        fi
       FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
     fi
   done
