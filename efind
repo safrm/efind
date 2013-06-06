@@ -25,6 +25,12 @@ then
 	exit 1;
 fi
 
+if [  $# -eq 0 ]
+then
+    usage 
+	exit 1;
+fi
+
 START_TIME=`date +'%s'`
 
 echo "TXT files=========================================="
