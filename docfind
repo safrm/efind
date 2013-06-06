@@ -52,7 +52,7 @@ if [ -z "$WHAT" ]; then
     echo "You have to specify searching pattern, exiting.."; exit 1;
 fi
 
-if [ -z "$SEARCH_DIR" ] || [ ! -d "$SEARCH_DIR" ]; then
+if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
 	SEARCH_DIR="./"
 fi
 
