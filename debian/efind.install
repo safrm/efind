@@ -1,6 +1,7 @@
 efind /usr/bin/
 docfind /usr/bin/
 cppfind /usr/bin/
+gcfind /usr/bin/
 htmlfind /usr/bin/
 javafind /usr/bin/
 pdffind /usr/bin/

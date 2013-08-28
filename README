@@ -6,6 +6,7 @@ description: extended recursive search for documents, searching in filenames & c
 content: 
 cppfind .................. c++ files recursive search
 docfind .................. doc, docx, rtf, odt files recursive search
+gcfind ................... giot configs files recursive search
 htmlfind ................. htm,html files recursive search
 javafind ................. java files recursive search
 pdffind .................. pdf files recursive search
