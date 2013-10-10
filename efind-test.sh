@@ -13,6 +13,9 @@ usage() {
     echo " --help ............................. shows command line help"
     echo " "
 }
+#support color escape characters on different terminals
+alias echo="/bin/echo -e"
+
 START_TIME=`date +'%s'`
 CASE_SENS=0
 TOTAL_COUNT=0
