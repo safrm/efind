@@ -18,6 +18,7 @@ usage() {
     echo " -no --name-only .................... print only filenames (by default disabled)"
     echo " "
 }
+
 START_TIME=`date +'%s'`
 CASE_SENS=0
 TOTAL_COUNT=0
@@ -72,7 +73,7 @@ echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FI
 #filenames search
 FIFO=/tmp/FOUND_COUNT_FN.$$
 trap 'rm -f $FIFO' 0
-mkfifo $FIFO
+mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
@@ -92,8 +93,10 @@ echo "${FILES}" | \
 }
 
 #pass the value back to script
-read FOUND_COUNT_FN < $FIFO
-wait $!
+if [ -e $FIFO ]; then
+  read FOUND_COUNT_FN < $FIFO
+  wait $!
+fi
 fi
 
 #content search
@@ -104,9 +107,9 @@ echo "${FILES}" | \
     if [ "$RESULT" != "" ] 
     then
       if [ $FILENAME_ONLY -eq 1 ]; then
-        echo "\033[34m$FILE\033[0m";
+        echo -n -e "\033[34m$FILE\033[0m";
       else
-        echo "\033[34m$FILE\033[0m: $RESULT";
+        echo -n -e "\033[34m$FILE\033[0m: $RESULT";
        fi
       FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
     fi

@@ -78,15 +78,18 @@ NOEX_FILES=`echo "$ALLFILES" |grep -v "[^/]*\.[a-z0-9]*$" `
 #filter out non-script ones - don't support whitespaces atm
 FIFO2=/tmp/NOEX_FILE_SCRIPTS.$$
 trap 'rm -f $FIFO2' 0
-mkfifo $FIFO2
+mkfifo $FIFO2 2> /dev/null
 echo "${NOEX_FILES}" | while IFS='\n' read -r FILE ; do
      if grep -r -q "#\!/bin/sh" "$FILE" ; then
-		echo "$FILE" >> $FIFO2 &
+        echo "$FILE" >> $FIFO2 &
      fi
 done
+
 #pass the value back to script
-NOEX_FILE_SCRIPTS=`cat $FIFO2`
-wait $!
+if [ -e $FIFO ]; then
+  NOEX_FILE_SCRIPTS=`cat $FIFO2`
+  wait $!
+fi
 #echo "$NOEX_FILE_SCRIPTS \n-----------"
 NOEX_COUNT=`echo "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
 
@@ -99,7 +102,7 @@ echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m($S
 #filenames search
 FIFO=/tmp/FOUND_COUNT_FN.$$
 trap 'rm -f $FIFO' 0
-mkfifo $FIFO
+mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
@@ -118,9 +121,11 @@ echo "${FILES}" | \
   echo "$FOUND_COUNT_FN" > $FIFO &
 }
 
-#pass the value back to script
-read FOUND_COUNT_FN < $FIFO
-wait $!
+  #pass the value back to script
+  if [ -e $FIFO ]; then
+    read FOUND_COUNT_FN < $FIFO
+    wait $!
+  fi
 fi
 
 #content search
