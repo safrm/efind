@@ -18,6 +18,8 @@ usage() {
     echo " -no --name-only .................... print only filenames (by default disabled)"
     echo " "
 }
+#support color escape characters on different terminals
+alias echo="/bin/echo -e"
 
 START_TIME=`date +'%s'`
 CASE_SENS=0
