@@ -7,5 +7,6 @@ javafind /usr/bin/
 pdffind /usr/bin/
 pptfind /usr/bin/
 shfind /usr/bin/
+specfind /usr/bin/
 txtfind /usr/bin/
 xmlfind /usr/bin/
