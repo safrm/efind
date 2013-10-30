@@ -69,7 +69,11 @@ if [ $CASE_SENS -eq 1 ]; then
     CSF="" 
 fi
 
-FILES=`find $SEARCH_DIR -type f -not -wholename "*\/.git*" |  grep -i -E '\.(h|cpp)$'`
+FIND_WHOLENAME_FLAG="-wholename"
+find -wholename something --version > /dev/null 2>&1
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-name"
+
+FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" |  grep -i -E '\.(h|cpp)$'`
 FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT cpp,h\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES "
 

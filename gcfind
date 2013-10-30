@@ -59,8 +59,13 @@ if [ $CASE_SENS -eq 1 ]; then
     CSF="" 
 fi
 
+FIND_WHOLENAME_FLAG="-wholename"
+find -wholename something --version > /dev/null 2>&1
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-name"
+
+
 #sh files first
-FILES=`find $SEARCH_DIR -type f -wholename "*\/\.git/config" | grep -v '^$'`
+FILES=`find $SEARCH_DIR -type f $FIND_WHOLENAME_FLAG "*\/\.git/config" | grep -v '^$'`
 FILES_COUNT=`echo "$FILES"  | grep -v '^$'  | wc -l `
 
 echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT (.git/config)\033[0m files CS:$CASE_SENS"
