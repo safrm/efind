@@ -117,7 +117,7 @@ fi
 if [ $SEARCH_CONTENT -eq 1 ]; then
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
-    RESULT=`html2text "$FILE" | grep $COLORS $CSF -E "$WHAT"`
+    RESULT=`html2text "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
         if [ $FILENAME_ONLY -eq 1 ]; then

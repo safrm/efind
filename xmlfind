@@ -118,7 +118,7 @@ fi
 if [ $SEARCH_CONTENT -eq 1 ]; then
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
-    RESULT=`xml2 < "$FILE" |  grep $COLORS $CSF -E "$WHAT"`
+    RESULT=`xml2 < "$FILE" 2> /dev/null |  grep $COLORS $CSF -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
         if [ $FILENAME_ONLY -eq 1 ]; then
