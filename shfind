@@ -70,11 +70,11 @@ fi
 
 FIND_WHOLENAME_FLAG="-wholename"
 find -wholename something --version > /dev/null 2>&1
-[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-name"
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
 #sh files first
 ALLFILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/\.git*" | grep -v '^$'`
-FILES=`echo "$ALLFILES" |grep -i ".sh\$"`
+FILES=`echo "$ALLFILES" |grep -i "\.sh\$"`
 SHFILES_COUNT=`echo "$FILES"  | grep -v '^$'  | wc -l `
 #echo "$FILES \n-----------"
 
