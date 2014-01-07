@@ -104,7 +104,7 @@ NOEX_COUNT=`echo "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
 FILES="$FILES\n$NOEX_FILE_SCRIPTS"
 FILES=`echo "$FILES" | grep -v '^$'`
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
-echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.sh/-)\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
+echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.sh/-)\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
 FIFO=/tmp/FOUND_COUNT_FN.$$
@@ -118,9 +118,9 @@ echo "${FILES}" | \
     if [ "$RESULT" != "" ] 
     then
         if [ $FILENAME_ONLY -eq 1 ]; then
-          echo "\033[34m$FILE\033[0m";
+          echo "\033[01;34m$FILE\033[0m";
         else
-          echo "\033[34m$FILE\033[0m: $RESULT";
+          echo "\033[01;34m$FILE\033[0m: $RESULT";
         fi
      FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
     fi
@@ -143,9 +143,9 @@ echo "${FILES}" | \
     if [ "$RESULT" != "" ] 
     then
         if [ $FILENAME_ONLY -eq 1 ]; then
-          echo "\033[34m$FILE\033[0m";
+          echo "\033[01;34m$FILE\033[0m";
         else
-          echo "\033[34m$FILE\033[0m: $RESULT";
+          echo "\033[01;34m$FILE\033[0m: $RESULT";
         fi
       FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
     fi

@@ -84,7 +84,7 @@ find -wholename something --version > /dev/null 2>&1
 
 FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" -printf '%p\n' | grep -i -Z "\.pdf\$"`
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l `
-echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT pdf\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
+echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT pdf\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
 FIFO=/tmp/FOUND_COUNT_FN.$$
@@ -98,9 +98,9 @@ echo "${FILES}" | \
     if [ "$RESULT" != "" ] 
     then
         if [ $FILENAME_ONLY -eq 1 ]; then
-          echo "\033[34m$FILE\033[0m";
+          echo "\033[01;34m$FILE\033[0m";
         else
-          echo "\033[34m$FILE\033[0m: $RESULT";
+          echo "\033[01;34m$FILE\033[0m: $RESULT";
         fi
      FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
     fi
@@ -124,9 +124,9 @@ echo "${FILES}" | \
     if [ "$RESULT" != "" ] 
     then
         if [ $FILENAME_ONLY -eq 1 ]; then
-          echo "\033[34m$FILE\033[0m";
+          echo "\033[01;34m$FILE\033[0m";
         else
-          echo "\033[34m$FILE\033[0m: $RESULT";
+          echo "\033[01;34m$FILE\033[0m: $RESULT";
         fi
       FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
     fi
