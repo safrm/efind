@@ -16,6 +16,8 @@ usage() {
     echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
     echo " -no --name-only .................... print only filenames (by default disabled)"
+    echo " -no --name-only .................... print only filenames (by default disabled)"
+    echo " -ext --extension  <ext>  ........... choose extension (default txt)"
     echo " "
 }
 #support color escape characters on different terminals
@@ -29,6 +31,7 @@ FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
 SEARCH_CONTENT=1
 FILENAME_ONLY=0
+EXT=txt
 while [ $# -gt 0 ]; do
   case "$1" in
     --help) usage exit ;;
@@ -36,6 +39,9 @@ while [ $# -gt 0 ]; do
     -nf | --no-filenames )  SEARCH_FILENAMES=0 ;;
     -nc | --no-content )  SEARCH_CONTENT=0 ;;
     -no | --name-only )  FILENAME_ONLY=1 ;;
+    -ext | --extension )  shift
+                          EXT=$1
+                          ;;
     * )      
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 
@@ -48,7 +54,7 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
-
+EXT_RE=`printf '\.%s$' $EXT`
 if [ -z "$WHAT" ]; then 
     echo "You have to specify searching pattern, exiting.."; exit 1;
 fi
@@ -72,9 +78,9 @@ FIND_WHOLENAME_FLAG="-wholename"
 find -wholename something --version > /dev/null 2>&1
 [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-name"
 
-FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" |grep -i "\.txt\$"`
+FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "$EXT_RE"`
 FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
-echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT txt\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
+echo "searching '\033[32m$WHAT\033[0m' in \033[34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT $EXT\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
 FIFO=/tmp/FOUND_COUNT_FN.$$
