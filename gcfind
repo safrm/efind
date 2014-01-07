@@ -61,7 +61,7 @@ fi
 
 FIND_WHOLENAME_FLAG="-wholename"
 find -wholename something --version > /dev/null 2>&1
-[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-name"
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
 
 #sh files first

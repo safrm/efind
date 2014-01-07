@@ -79,7 +79,7 @@ fi
 
 FIND_WHOLENAME_FLAG="-wholename"
 find -wholename something --version > /dev/null 2>&1
-[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-name"
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
 FILES=$(find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(doc|docx|rtf|odt)$')
 FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
