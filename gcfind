@@ -40,6 +40,7 @@ while [ $# -gt 0 ]; do
   shift
 done
 
+
 if [ -z "$WHAT" ]; then 
     echo "You have to specify searching pattern, exiting.."; exit 1;
 fi
@@ -65,7 +66,7 @@ find -wholename something --version > /dev/null 2>&1
 
 
 #sh files first
-FILES=`find $SEARCH_DIR -type f $FIND_WHOLENAME_FLAG "*\/\.git/config" | grep -v '^$'`
+FILES=`find $SEARCH_DIR -type f $FIND_WHOLENAME_FLAG "*\/\.git/config" -name config | grep -v '^$'`
 FILES_COUNT=`echo "$FILES"  | grep -v '^$'  | wc -l `
 
 echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT (.git/config)\033[0m files CS:$CASE_SENS"
