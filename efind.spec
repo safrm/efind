@@ -1,4 +1,3 @@
-%define buildroot %{_topdir}/%{name}-%{version}-root
 %define APP_BUILD_DATE %(date +'%%Y%%m%%d_%%H%%M')
 
 Name:       efind
@@ -13,7 +12,6 @@ Vendor:     Miroslav Safr <miroslav.safr@gmail.com>
 Source0:    %{name}-%{version}.tar.bz2
 Autoreq: on
 Autoreqprov: on
-BuildRoot: %{buildroot}
 
 %description
 Extended search for documents using common shell utilities
@@ -21,18 +19,11 @@ Extended search for documents using common shell utilities
 
 %prep
 %setup -c -n ./%{name}-%{version}
-# >> setup
-# << setup
 
 %build
-# >> build post
-# << build post
 
 %install
-rm -fr $RPM_BUILD_ROOT
-# >> install pre
-export INSTALL_ROOT=$RPM_BUILD_ROOT
-# << install pre 
+rm -fr %{buildroot}
 mkdir -p %{buildroot}/usr/bin
 install -m 755 ./efind %{buildroot}/usr/bin/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/efind && rm -f %{buildroot}/usr/bin/efind.bkp
@@ -70,13 +61,19 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE
 install -m 755 ./xmlfind %{buildroot}/usr/bin/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/xmlfind && rm -f %{buildroot}/usr/bin/xmlfind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/xmlfind && rm -f %{buildroot}/usr/bin/xmlfind.bkp
-# >> install post
-# << install post
 
+%check
+for TEST in $(  grep -r -l -h --exclude-dir=test "#\!/bin/sh" . )
+do
+		sh -n "$TEST"
+		if  [ $? != 0 ]; then
+			echo "syntax error in $TEST, exiting.." 
+			exit 1
+		fi
+done 
 
 %files
 %defattr(-,root,root,-)
-# >> files
 %{_bindir}/efind
 %{_bindir}/cppfind
 %{_bindir}/docfind
@@ -89,6 +86,6 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE
 %{_bindir}/specfind
 %{_bindir}/txtfind
 %{_bindir}/xmlfind
-# << files
+
 
 
