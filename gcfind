@@ -17,6 +17,9 @@ usage() {
     echo "Options: "
     echo "  --help ................ shows command line help"
     echo "  -cs ................... case sensitive content search (default:insensitive)"
+    echo "  -nf --no-filenames .... disable searching in filenames (by default enabled)"
+    echo "  -nc --no-content ...... disable searching in file content (by default enabled)"
+    echo "  -no --name-only ....... print only filenames (by default disabled)"
     echo "Note: it behaves as recursive cat if "WHAT" argument is missing"
     echo " "
 }
@@ -26,14 +29,22 @@ CASE_SENS=0
 TOTAL_COUNT=0
 FOUND_COUNT=0
 FOUND_COUNT_FN=0
+SEARCH_CONTENT=1
+FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --help) 
         usage 
-        exit 1
+        exit
         ;;
     -cs) 
         CASE_SENS=1 
+        ;;
+    -nc | --no-content )  
+        SEARCH_CONTENT=0 
+        ;;
+    -no | --name-only )
+        FILENAME_ONLY=1 
         ;;
     * )
         if [ -z "$WHAT" ]; then  
@@ -67,8 +78,7 @@ FIND_WHOLENAME_FLAG="-wholename"
 find -wholename something --version > /dev/null 2>&1
 [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
-
-#sh files first
+#files first
 FILES=`find $SEARCH_DIR -type f $FIND_WHOLENAME_FLAG "*\/\.git/config" -name config | grep -v '^$'`
 FILES_COUNT=`echo "$FILES"  | grep -v '^$'  | wc -l `
 
@@ -77,10 +87,14 @@ echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m
 #content search
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
-    RESULT=`cat "$FILE" | grep $COLORS $CSF -E "$WHAT"`
+    RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
-      echo "\033[01;34m$FILE\033[0m: $RESULT";
+      if [ $FILENAME_ONLY -eq 1 ]; then
+        echo "\033[01;34m$FILE\033[0m";
+      else
+        echo "\033[01;34m$FILE\033[0m: $RESULT";
+      fi
       FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
     fi
   done
