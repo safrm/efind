@@ -7,7 +7,6 @@ VERSION_DATE=NA
 
 #support color escape characters on different terminals
 alias echo="/bin/echo -e"
-
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME ${VERSION} - extended recursive search for git configs"
@@ -29,10 +28,13 @@ FOUND_COUNT=0
 FOUND_COUNT_FN=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    --help) usage 
-            exit 1
-            ;;
-    -cs) CASE_SENS=1 ;;
+    --help) 
+        usage 
+        exit 1
+        ;;
+    -cs) 
+        CASE_SENS=1 
+        ;;
     * )
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 

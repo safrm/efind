@@ -4,6 +4,9 @@
 #author: Miroslav Safr <miroslav.safr@gmail.com> 
 VERSION=NA                                                                   
 VERSION_DATE=NA
+
+#support color escape characters on different terminals
+alias echo="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME ${VERSION} - extended recursive search for sh scripts (sh, sh scripts without extension)"
@@ -18,13 +21,11 @@ usage() {
     echo " -no --name-only .................... print only filenames (by default disabled)"
     echo " "
 }
-#support color escape characters on different terminals
-alias echo="/bin/echo -e"
 
 if [ "x$1" = "x--help" ]
 then
     usage 
-	exit 1;
+	exit 1
 fi
 
 if [  $# -eq 0 ]

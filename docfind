@@ -3,8 +3,11 @@
 #web: http://safrm.net/projects/efind
 #author: Miroslav Safr <miroslav.safr@gmail.com> 
 # needs libreoffice and unoconv
-VERSION=NA                                                                   
+VERSION=NA      
 VERSION_DATE=NA
+
+#support color escape characters on different terminals
+alias echo="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME ${VERSION} - extended recursive search for c++ files (cpp,h)"
@@ -19,8 +22,6 @@ usage() {
     echo " -no --name-only .................... print only filenames (by default disabled)"
     echo " "
 }
-#support color escape characters on different terminals
-alias echo="/bin/echo -e"
 
 START_TIME=`date +'%s'`
 CASE_SENS=0
@@ -32,11 +33,22 @@ SEARCH_CONTENT=1
 FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    --help) usage exit ;;
-    -cs) CASE_SENS=1 ;;
-    -nf | --no-filenames )  SEARCH_FILENAMES=0 ;;
-    -nc | --no-content )  SEARCH_CONTENT=0 ;;
-    -no | --name-only )  FILENAME_ONLY=1 ;;
+    --help ) 
+        usage 
+        exit 0
+        ;;
+    -cs) 
+        CASE_SENS=1 
+        ;;
+    -nf | --no-filenames )  
+        SEARCH_FILENAMES=0 
+        ;;
+    -nc | --no-content )  
+        SEARCH_CONTENT=0 
+        ;;
+    -no | --name-only )  
+        FILENAME_ONLY=1 
+        ;;
     * )      
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 
