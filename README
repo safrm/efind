@@ -1,6 +1,6 @@
 name: efind
 author:  Miroslav Safr <miroslav.safr@gmail.com>
-web: http://safrm,net/projects/efind
+web: http://safrm.net/projects/efind
 description: extended recursive search for documents, searching in filenames & contents, case in/-sensitive, with whitespaces support and optimized for git checkout repos
 
 content: 

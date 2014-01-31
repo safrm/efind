@@ -11,7 +11,7 @@ alias echo="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME ${VERSION} - extended recursive search for c++ files (cpp,h)"
-    echo " http://safrm,net/projects/efind/"
+    echo " http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "

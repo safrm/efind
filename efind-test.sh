@@ -10,7 +10,7 @@ alias echo="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME ${VERSION} - extended recursive search testing script "
-    echo " http://safrm,net/projects/efind/"
+    echo " http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME"
     echo " options: "
     echo " --help ............................ shows command line help"

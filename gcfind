@@ -10,7 +10,7 @@ alias echo="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME ${VERSION} - extended recursive search for git configs"
-    echo "  http://safrm,net/projects/efind/"
+    echo "  http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME [OPTIONS]... [PATTERN] [SEARCHING_DIR]"
     echo "  PATTERN ............... string (requires \"\" if contains spaces) "
     echo "  SEARCHING_DIR ......... root directory for searching (default: current)"
