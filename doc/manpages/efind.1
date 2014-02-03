@@ -1,5 +1,5 @@
 '\" t
-.\"     Title: cppfind
+.\"     Title: efind
 .\"    Author: Miroslav Safr <miroslav.safr@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
 .\"      Date: 20140203_1407
@@ -7,7 +7,7 @@
 .\"    Source: efind 1.2.1
 .\"  Language: English
 .\"
-.TH "CPPFIND" "1" "20140203_1407" "efind 1.2.1" "Extended recursive search for"
+.TH "EFIND" "1" "20140203_1407" "efind 1.2.1" "Extended recursive search for"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -28,13 +28,13 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-cppfind \- Extended recursive search for c++ files (cpp,h)
+efind \- Combined extended recursive search for document files
 .SH "SYNOPSIS"
-.HP \w'\fBcppfind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
-\fBcppfind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only]
+.HP \w'\fBefind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
+\fBefind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only]
 .SH "DESCRIPTION"
 .PP
-Extended recursive search for documents, searching in filenames, contents, case in/\-sensitive, with whitespaces support and optimized for git cloned repos\&.
+Combined extended recursive search for documents, searching in filenames, contents, case in/\-sensitive, with whitespaces support and optimized for git cloned repos\&. Searches in TXT, HTML, PDF, PPT and DOC files\&.
 .SH "OPTIONS"
 .PP
 \-h \-\-help
@@ -67,11 +67,9 @@ String we are searching for (requires \e"\e" if contains spaces)\&.
 .SH "SEARCHING_DIR"
 .PP
 Root directory for searching\&. By default is used current directory\&.
-.PP
-Note: it behaves as recursive cat if \e"PATTERN\e" argument is missing\&.
 .SH "SEE ALSO"
 .PP
-efind(1)\&.
+cppfind(1), docfind(1), gcfind(1), htmlfind(1), javafind(1), pdffind(1), pptfind(1), shfind(1), specfind(1), txtfind(1), xmlfind(1)\&.
 \m[blue]\fB\%http://safrm.net/projects/efind/\fR\m[]
 .SH "AUTHOR"
 

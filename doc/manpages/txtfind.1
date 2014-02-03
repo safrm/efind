@@ -1,5 +1,5 @@
 '\" t
-.\"     Title: cppfind
+.\"     Title: txtfind
 .\"    Author: Miroslav Safr <miroslav.safr@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
 .\"      Date: 20140203_1407
@@ -7,7 +7,7 @@
 .\"    Source: efind 1.2.1
 .\"  Language: English
 .\"
-.TH "CPPFIND" "1" "20140203_1407" "efind 1.2.1" "Extended recursive search for"
+.TH "TXTFIND" "1" "20140203_1407" "efind 1.2.1" "Extended recursive search for"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -28,13 +28,13 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-cppfind \- Extended recursive search for c++ files (cpp,h)
+txtfind \- Extended recursive search for text files (txt)
 .SH "SYNOPSIS"
-.HP \w'\fBcppfind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
-\fBcppfind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only]
+.HP \w'\fBtxtfind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
+\fBtxtfind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only] [\-ext\ \-\-extension\ <ext>]
 .SH "DESCRIPTION"
 .PP
-Extended recursive search for documents, searching in filenames, contents, case in/\-sensitive, with whitespaces support and optimized for git cloned repos\&.
+Extended recursive search for text files (txt), searching in filenames, contents, case in/\-sensitive, with whitespaces support and optimized for git cloned repos\&.
 .SH "OPTIONS"
 .PP
 \-h \-\-help
@@ -60,6 +60,11 @@ Disables searching in file content (by default enabled)\&.
 \-no \-\-name\-only
 .RS 4
 Print only filenames (by default disabled)\&.
+.RE
+.PP
+\-ext \-\-extension <ext>
+.RS 4
+Change extension for searching pattern\&. (default txt)
 .RE
 .SH "PATTERN"
 .PP

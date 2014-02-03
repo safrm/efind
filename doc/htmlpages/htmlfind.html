@@ -1,0 +1,26 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>htmlfind</title><meta name="generator" content="DocBook XSL Stylesheets V1.76.1"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" title="htmlfind"><a name="htmlfind.1"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>htmlfind &#8212; Extended recursive search for html files (htm,html)</p></div><div class="refsynopsisdiv" title="Synopsis"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">htmlfind [OPTIONS]... PATTERN [SEARCHING_DIR]</code>  [-h --help] [-cs --case-sensitive] [-nf --no-filenames] [-nc --no-content] [-no --name-only]</p></div></div><div class="refsect1" title="DESCRIPTION"><a name="idp114640"></a><h2>DESCRIPTION</h2><p>
+      Extended recursive search for html files, searching in filenames, contents, case in/-sensitive, with whitespaces support and optimized for git cloned repos.
+    </p></div><div class="refsect1" title="OPTIONS"><a name="idp115328"></a><h2>OPTIONS</h2><div class="variablelist"><dl><dt><span class="term">-h --help</span></dt><dd><p>
+            Print help text to the screen.
+          </p></dd><dt><span class="term">-cs --case-sensitive</span></dt><dd><p>
+            Enables case sensitive content search (by default it is insensitive).
+          </p></dd><dt><span class="term">-nf --no-filenames</span></dt><dd><p>
+            Disables searching in filenames (by default enabled).
+          </p></dd><dt><span class="term">-nc --no-content</span></dt><dd><p>
+            Disables searching in file content (by default enabled).
+          </p></dd><dt><span class="term">-no --name-only</span></dt><dd><p>
+            Print only filenames (by default disabled).
+          </p></dd></dl></div></div><div class="refsect1" title="PATTERN"><a name="idp119840"></a><h2>PATTERN</h2><p>
+    String we are searching for (requires \"\" if contains spaces).
+    </p><p>
+    Note: it behaves as recursive cat if \"PATTERN\" argument is missing.
+    </p></div><div class="refsect1" title="SEARCHING_DIR"><a name="idp120776"></a><h2>SEARCHING_DIR</h2><p>
+      Root directory for searching. By default is used current directory.
+    </p></div><div class="refsect1" title="SEE ALSO"><a name="idp121440"></a><h2>SEE ALSO</h2><p>
+      efind(1).
+      <a class="ulink" href="http://safrm.net/projects/efind/" target="_top">http://safrm.net/projects/efind/</a>
+    </p></div><div class="refsect1" title="AUTHOR"><a name="idp122240"></a><h2>AUTHOR</h2>
+    Miroslav &#352;afr &lt;miroslav.safr@gmail.com&gt;
+  </div><div class="refsect1" title="LICENSE"><a name="idp122696"></a><h2>LICENSE</h2>
+   LGPL2
+  </div></div></body></html>

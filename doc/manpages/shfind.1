@@ -1,5 +1,5 @@
 '\" t
-.\"     Title: cppfind
+.\"     Title: shfind
 .\"    Author: Miroslav Safr <miroslav.safr@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
 .\"      Date: 20140203_1407
@@ -7,7 +7,7 @@
 .\"    Source: efind 1.2.1
 .\"  Language: English
 .\"
-.TH "CPPFIND" "1" "20140203_1407" "efind 1.2.1" "Extended recursive search for"
+.TH "SHFIND" "1" "20140203_1407" "efind 1.2.1" "Extended recursive search for"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -28,13 +28,13 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-cppfind \- Extended recursive search for c++ files (cpp,h)
+shfind \- Extended recursive search for sh script files (sh, sh scripts without extension)
 .SH "SYNOPSIS"
-.HP \w'\fBcppfind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
-\fBcppfind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only]
+.HP \w'\fBshfind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
+\fBshfind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only]
 .SH "DESCRIPTION"
 .PP
-Extended recursive search for documents, searching in filenames, contents, case in/\-sensitive, with whitespaces support and optimized for git cloned repos\&.
+Extended recursive search for sh script files (sh, sh scripts without extension), searching in filenames, contents, case in/\-sensitive, with whitespaces support and optimized for git cloned repos\&.
 .SH "OPTIONS"
 .PP
 \-h \-\-help
@@ -64,11 +64,11 @@ Print only filenames (by default disabled)\&.
 .SH "PATTERN"
 .PP
 String we are searching for (requires \e"\e" if contains spaces)\&.
+.PP
+Note: it behaves as recursive cat if \e"PATTERN\e" argument is missing\&.
 .SH "SEARCHING_DIR"
 .PP
 Root directory for searching\&. By default is used current directory\&.
-.PP
-Note: it behaves as recursive cat if \e"PATTERN\e" argument is missing\&.
 .SH "SEE ALSO"
 .PP
 efind(1)\&.

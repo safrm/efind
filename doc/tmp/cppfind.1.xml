@@ -8,7 +8,7 @@
         <email>miroslav.safr@gmail.com</email>
         <personblurb><para>Author and maintainer</para></personblurb>
     </author>
-    <date>20140203_1311</date>
+    <date>20140203_1407</date>
     <productnumber>1.2.1</productnumber>
     <productname>efind</productname>
 </refentryinfo>
@@ -98,6 +98,9 @@
     <title>SEARCHING_DIR</title>
     <para>
       Root directory for searching. By default is used current directory.
+    </para>
+    <para>
+    Note: it behaves as recursive cat if \"PATTERN\" argument is missing.
     </para>
   </refsect1>
 
