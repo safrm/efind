@@ -1,0 +1,85 @@
+'\" t
+.\"     Title: cppfind
+.\"    Author: Miroslav Safr <miroslav.safr@gmail.com>
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 20140203_1311
+.\"    Manual: Extended recursive search for documents
+.\"    Source: efind 1.2.1
+.\"  Language: English
+.\"
+.TH "CPPFIND" "1" "20140203_1311" "efind 1.2.1" "Extended recursive search for"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+cppfind \- Extended recursive search for c++ files (cpp,h)
+.SH "SYNOPSIS"
+.HP \w'\fBcppfind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
+\fBcppfind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only]
+.SH "DESCRIPTION"
+.PP
+Extended recursive search for documents, searching in filenames, contents, case in/\-sensitive, with whitespaces support and optimized for git cloned repos\&.
+.SH "OPTIONS"
+.PP
+\-h \-\-help
+.RS 4
+Print help text to the screen\&.
+.RE
+.PP
+\-cs \-\-case\-sensitive
+.RS 4
+Enables case sensitive content search (by default it is insensitive)\&.
+.RE
+.PP
+\-nf \-\-no\-filenames
+.RS 4
+Disables searching in filenames (by default enabled)\&.
+.RE
+.PP
+\-nc \-\-no\-content
+.RS 4
+Disables searching in file content (by default enabled)\&.
+.RE
+.PP
+\-no \-\-name\-only
+.RS 4
+Print only filenames (by default disabled)\&.
+.RE
+.SH "PATTERN"
+.PP
+String we are searching for (requires \e"\e" if contains spaces)\&.
+.SH "SEARCHING_DIR"
+.PP
+Root directory for searching\&. By default is used current directory\&.
+.SH "SEE ALSO"
+.PP
+efind(1)\&.
+\m[blue]\fB\%http://safrm.net/projects/efind/\fR\m[]
+.SH "AUTHOR"
+
+    Miroslav Šafr <miroslav\&.safr@gmail\&.com>
+  .SH "LICENSE"
+
+   LGPL2
+  .SH "AUTHOR"
+.PP
+\fBMiroslav Safr\fR <\&miroslav\&.safr@gmail\&.com\&>
+.RS 4
+Author and maintainer
+.RE

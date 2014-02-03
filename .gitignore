@@ -5,3 +5,4 @@ debian/efind.substvars
 debian/efind/*
 rpm/*
 *.changes
+doc/tmp/*

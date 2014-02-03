@@ -9,13 +9,13 @@ VERSION_DATE=NA
 alias echo="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
-    echo "$BASENAME ${VERSION} - extended recursive search for text files (txt)"
+    echo "$BASENAME ${VERSION} - extended recursive search for xml files (xml)"
     echo " http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
-    echo " --help ............................. shows command line help"
-    echo " -cs ................................ case sensitive content search (by default it is insensitive)"
+    echo " -h --help .......................... shows command line help"
+    echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
     echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
     echo " -no --name-only .................... print only filenames (by default disabled)"
@@ -32,11 +32,11 @@ SEARCH_CONTENT=1
 FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    --help) 
+    -h | --help) 
         usage 
         exit
         ;;
-    -cs) 
+    -cs | --case-sensitive ) 
         CASE_SENS=1 
         ;;
     -nf | --no-filenames )  

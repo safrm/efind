@@ -2,7 +2,7 @@
 #extended recursive search for documents - html files (htm, html)
 #web: http://safrm.net/projects/efind
 #author: Miroslav Safr <miroslav.safr@gmail.com> 
-VERSION=NA                                                                   
+VERSION=NA
 VERSION_DATE=NA
 
 #support color escape characters on different terminals
@@ -14,8 +14,8 @@ usage() {
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
-    echo " --help ............................. shows command line help"
-    echo " -cs ................................ case sensitive content search (by default it is insensitive)"
+    echo " -h --help .......................... shows command line help"
+    echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
     echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
     echo " -no --name-only .................... print only filenames (by default disabled)"
@@ -32,11 +32,11 @@ SEARCH_CONTENT=1
 FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    --help) 
+    -h | --help) 
         usage 
         exit 
         ;;
-    -cs) 
+    -cs | --case-sensitive ) 
         CASE_SENS=1 
         ;;
     -nf | --no-filenames )  
@@ -99,16 +99,16 @@ mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then
 echo "${FILES}" | \
 { while IFS='\n' read -r FILE ; do
-	# only file basename    
-	RESULT=`echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+	  # only file basename    
+	  RESULT=`echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
     if [ "$RESULT" != "" ] 
     then
         if [ $FILENAME_ONLY -eq 1 ]; then
-          echo "\033[01;34m$FILE\033[0m";
+            echo "\033[01;34m$FILE\033[0m";
         else
-          echo "\033[01;34m$FILE\033[0m: $RESULT";
+            echo "\033[01;34m$FILE\033[0m: $RESULT";
         fi
-     FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
+        FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
     fi
   done
   echo "$FOUND_COUNT_FN" > $FIFO &
@@ -116,8 +116,8 @@ echo "${FILES}" | \
 
   #pass the value back to script
   if [ -e $FIFO ]; then
-    read FOUND_COUNT_FN < $FIFO
-    wait $!
+      read FOUND_COUNT_FN < $FIFO
+      wait $!
   fi
 fi
 

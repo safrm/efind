@@ -15,12 +15,12 @@ usage() {
     echo "  PATTERN ............... string (requires \"\" if contains spaces) "
     echo "  SEARCHING_DIR ......... root directory for searching (default: current)"
     echo "Options: "
-    echo "  --help ................ shows command line help"
-    echo "  -cs ................... case sensitive content search (default:insensitive)"
+    echo "  -h --help ............. shows command line help"
+    echo "  -cs --case-sensitive .. case sensitive content search (default:insensitive)"
     echo "  -nf --no-filenames .... disable searching in filenames (by default enabled)"
     echo "  -nc --no-content ...... disable searching in file content (by default enabled)"
     echo "  -no --name-only ....... print only filenames (by default disabled)"
-    echo "Note: it behaves as recursive cat if "WHAT" argument is missing"
+    echo "Note: it behaves as recursive cat if \"PATTERN\" argument is missing."
     echo " "
 }
 
@@ -33,11 +33,11 @@ SEARCH_CONTENT=1
 FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
   case "$1" in
-    --help) 
+    -h | --help) 
         usage 
         exit
         ;;
-    -cs) 
+    -cs | --case-sensitive ) 
         CASE_SENS=1 
         ;;
     -nc | --no-content )  

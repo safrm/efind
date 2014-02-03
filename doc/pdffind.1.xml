@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<refentry id="pdffind.1">
+
+<refentryinfo>
+    <title>Extended recursive search for documents</title>
+    <author>
+        <personname><firstname>Miroslav</firstname><surname>Safr</surname></personname>
+        <email>miroslav.safr@gmail.com</email>
+        <personblurb><para>Author and maintainer</para></personblurb>
+    </author>
+    <date>2013-02-03</date>
+    <productnumber>NA</productnumber>
+    <productname>efind</productname>
+</refentryinfo>
+
+<refmeta>
+    <refentrytitle>pdffind</refentrytitle>
+	<manvolnum>1</manvolnum>
+</refmeta>
+
+
+<refnamediv>
+    <refname>pdffind</refname>
+    <refpurpose>Extended recursive search for pdf files (pdf)</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+	<cmdsynopsis>
+        <command>pdffind [OPTIONS]... PATTERN [SEARCHING_DIR]</command>
+        <arg choice="opt">-h --help</arg>
+        <arg choice="opt">-cs --case-sensitive</arg>
+        <arg choice="opt">-nf --no-filenames</arg>
+        <arg choice="opt">-nc --no-content</arg>
+        <arg choice="opt">-no --name-only</arg>
+	</cmdsynopsis>
+</refsynopsisdiv>
+
+  <refsect1><title>DESCRIPTION</title>
+    <para>
+      Extended recursive search for pdf documents, searching in filenames, contents, case in/-sensitive, with whitespaces support and optimized for git cloned repos.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <variablelist>
+      <varlistentry><term>-h --help</term>
+        <listitem>
+          <para>
+            Print help text to the screen.
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry><term>-cs --case-sensitive</term>
+        <listitem>
+          <para>
+            Enables case sensitive content search (by default it is insensitive).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry><term>-nf --no-filenames</term>
+        <listitem>
+          <para>
+            Disables searching in filenames (by default enabled).
+          </para>
+        </listitem>
+      </varlistentry>
+      
+      <varlistentry><term>-nc --no-content</term>
+        <listitem>
+          <para>
+            Disables searching in file content (by default enabled).
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry><term>-no --name-only</term>
+        <listitem>
+          <para>
+            Print only filenames (by default disabled).
+          </para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+    
+  </refsect1>
+  <refsect1>
+    <title>PATTERN</title>
+    <para>
+    String we are searching for (requires \"\" if contains spaces).
+    </para>
+    <para>
+    Note: it behaves as recursive cat if \"PATTERN\" argument is missing.
+    </para>
+  </refsect1>
+
+  <refsect1>
+    <title>SEARCHING_DIR</title>
+    <para>
+      Root directory for searching. By default is used current directory.
+    </para>
+  </refsect1>
+
+  <refsect1><title>SEE ALSO</title>
+    <para>
+      efind(1).
+      <ulink url="http://safrm.net/projects/efind/"/>
+    </para>
+  </refsect1>
+
+  <refsect1><title>AUTHOR</title>
+    Miroslav Šafr &lt;miroslav.safr@gmail.com&gt;
+  </refsect1>
+  <refsect1><title>LICENSE</title>
+   LGPL2
+  </refsect1>
+</refentry>

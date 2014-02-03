@@ -1,7 +1,9 @@
 #/bin/sh
 #efind - extended search for documents  - http://safrm.net/projects/efind
 #author:  Miroslav Safr <miroslav.safr@gmail.com>
-BINDIR=/usr/bin
+BINDIR=/usr/bin/
+DOCDIR=/usr/share/doc
+MANDIR=/usr/share/man
 
 #root check
 USERID=`id -u`
@@ -13,6 +15,21 @@ USERID=`id -u`
 #automatic version 
 if command -v appver &>/dev/null; then . appver; else APP_SHORT_VERSION=NA ; APP_FULL_VERSION_TAG=NA ; APP_BUILD_DATE=`date +'%Y%m%d_%H%M'`; fi
 
+#test
+#test
+for TEST in $(  grep -r -l -h --exclude-dir=test "#\!/bin/sh" . )
+do
+		sh -n $TEST
+		if  [ $? != 0 ]; then
+			echo "syntax error in $TEST, exiting.." 
+			exit 1
+		fi
+done
+
+#update documentation
+cd doc
+./update_docs.sh
+cd -
 
 mkdir -p -m 0755 $BINDIR
 install -m 0777 -v ./efind  $BINDIR/
@@ -51,3 +68,18 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=$APP_BUILD_DATE/
 install -m 0777 -v ./xmlfind  $BINDIR/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=$APP_FULL_VERSION_TAG/" $BINDIR/xmlfind && rm -f $BINDIR/xmlfind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=$APP_BUILD_DATE/" $BINDIR/xmlfind && rm -f $BINDIR/xmlfind.bkp
+
+
+MANPAGES=`find ./doc/manpages -type f`
+install -d -m 755 $MANDIR/man1
+install -m 644 $MANPAGES $MANDIR/man1
+
+DOCS="./README ./LICENSE.LGPL"
+install -d -m 755 $DOCDIR/efind
+install -m 644 $DOCS $DOCDIR/efind
+
+HTMLPAGES=`find ./doc/htmlpages -type f`
+install -d -m 755 $DOCDIR/efind/html
+install -m 644 $HTMLPAGES $DOCDIR/efind/html
+
+

@@ -10,3 +10,8 @@ shfind /usr/bin/
 specfind /usr/bin/
 txtfind /usr/bin/
 xmlfind /usr/bin/
+
+doc/manpages/* /usr/share/man/man1/
+
+README /usr/share/doc/efind
+LICENSE.LGPL /usr/share/doc/efind

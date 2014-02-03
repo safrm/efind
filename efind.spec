@@ -21,6 +21,9 @@ Extended search for documents using common shell utilities
 %setup -c -n ./%{name}-%{version}
 
 %build
+cd doc
+./update_docs.sh
+cd -
 
 %install
 rm -fr %{buildroot}
@@ -62,6 +65,15 @@ install -m 755 ./xmlfind %{buildroot}/usr/bin/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/xmlfind && rm -f %{buildroot}/usr/bin/xmlfind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/xmlfind && rm -f %{buildroot}/usr/bin/xmlfind.bkp
 
+#documentation
+MANPAGES=`find ./doc/manpages -type f`
+install -d -m 755 %{buildroot}%{_mandir}/man1
+install -m 644 $MANPAGES %{buildroot}%{_mandir}/man1
+
+DOCS="./README ./LICENSE.LGPL"
+install -d -m 755 %{buildroot}%{_docdir}/efind
+install -m 644 $DOCS %{buildroot}%{_docdir}/efind
+
 %check
 for TEST in $(  grep -r -l -h --exclude-dir=test "#\!/bin/sh" . )
 do
@@ -87,5 +99,22 @@ done
 %{_bindir}/txtfind
 %{_bindir}/xmlfind
 
+#man pages
+%{_mandir}/man1/efind.1*
+%{_mandir}/man1/cppfind.1*
+%{_mandir}/man1/docfind.1*
+%{_mandir}/man1/gcfind.1*
+%{_mandir}/man1/htmlfind.1*
+%{_mandir}/man1/javafind.1*
+%{_mandir}/man1/pdffind.1*
+%{_mandir}/man1/pptfind.1*
+%{_mandir}/man1/shfind.1*
+%{_mandir}/man1/specfind.1*
+%{_mandir}/man1/txtfind.1*
+%{_mandir}/man1/xmlfind.1*
+
+#other docs
+%{_docdir}/efind/README
+%{_docdir}/efind/LICENSE.LGPL
 
 
