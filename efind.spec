@@ -21,9 +21,7 @@ Extended search for documents using common shell utilities
 %setup -c -n ./%{name}-%{version}
 
 %build
-cd doc
-./update_docs.sh
-cd -
+cd doc && ./update_docs.sh && cd -
 
 %install
 rm -fr %{buildroot}

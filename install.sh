@@ -78,8 +78,8 @@ DOCS="./README ./LICENSE.LGPL"
 install -d -m 755 $DOCDIR/efind
 install -m 644 $DOCS $DOCDIR/efind
 
-HTMLPAGES=`find ./doc/htmlpages -type f`
-install -d -m 755 $DOCDIR/efind/html
-install -m 644 $HTMLPAGES $DOCDIR/efind/html
+#HTMLPAGES=`find ./doc/htmlpages -type f`
+#install -d -m 755 $DOCDIR/efind/html
+#install -m 644 $HTMLPAGES $DOCDIR/efind/html
 
 
