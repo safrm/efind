@@ -2,11 +2,11 @@ Source: efind
 Section: utils
 Priority: optional
 Maintainer: Miroslav Safr <miroslav.safr@gmail.com>
-Build-Depends: debhelper (>= 5)
+Build-Depends: debhelper (>= 5), appver, xsltproc, docbook-xsl
 Standards-Version: 1.0.0
 
 Package: efind
 Architecture: all
-Depends: grep, html2text, unzip, sed, poppler-utils,  ${misc:Depends}, ${launcher:Depends}, ${shlibs:Depends}
+Depends: grep, html2text, unzip, sed, poppler-utils
 Recommends: xml2, unoconv
 Description: extended search for documents
