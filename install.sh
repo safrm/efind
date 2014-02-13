@@ -16,7 +16,6 @@ USERID=`id -u`
 if command -v appver &>/dev/null; then . appver; else APP_SHORT_VERSION=NA ; APP_FULL_VERSION_TAG=NA ; APP_BUILD_DATE=`date +'%Y%m%d_%H%M'`; fi
 
 #test
-#test
 for TEST in $(  grep -r -l -h --exclude-dir=test "#\!/bin/sh" . )
 do
 		sh -n $TEST
@@ -77,9 +76,5 @@ install -m 644 $MANPAGES $MANDIR/man1
 DOCS="./README ./LICENSE.LGPL"
 install -d -m 755 $DOCDIR/efind
 install -m 644 $DOCS $DOCDIR/efind
-
-#HTMLPAGES=`find ./doc/htmlpages -type f`
-#install -d -m 755 $DOCDIR/efind/html
-#install -m 644 $HTMLPAGES $DOCDIR/efind/html
 
 

@@ -15,7 +15,7 @@ Autoreqprov: on
 #BuildRequires:  xsltproc
 BuildRequires:  libxslt
 #BuildRequires:  docbook-xsl
-BuildRequires: docbook-xsl-stylesheets
+BuildRequires:  docbook-xsl-stylesheets
 BuildRequires:  appver >= 1.1.1
 
 %description
@@ -76,6 +76,7 @@ install -m 644 $MANPAGES %{buildroot}%{_mandir}/man1
 DOCS="./README ./LICENSE.LGPL"
 install -d -m 755 %{buildroot}%{_docdir}/efind
 install -m 644 $DOCS %{buildroot}%{_docdir}/efind
+sed -i".bkp" "1,/Version: /s/Version:   */Version:   %{version} %{APP_BUILD_DATE}/"  %{buildroot}%{_docdir}/gr-scripts/README && rm -f %{buildroot}%{_docdir}/gr-scripts/README.bkp
 
 %check
 for TEST in $(  grep -r -l -h --exclude-dir=test "#\!/bin/sh" . )
@@ -117,6 +118,7 @@ done
 %{_mandir}/man1/xmlfind.1*
 
 #other docs
+%dir %{_docdir}/efind
 %{_docdir}/efind/README
 %{_docdir}/efind/LICENSE.LGPL
 
