@@ -193,6 +193,17 @@ if [ $? -ne 0 ] ; then
 fi
 echo "TC$TCID:$NAME OK "
 
+NAME="xmlfind-semaphored-ext"
+TCID=$(($TCID + 1)) ;
+echo "TC$TCID:$NAME started"
+SCRIPT=xmlfind
+echo  " $BINDIR$SCRIPT String2find ./test -ext sem"
+sh $BINDIR$SCRIPT String2find ./test -ext sem
+if [ $? -ne 0 ] ; then 
+    echo "TC$TCID:$NAME failed " && exit $TCID;
+fi
+echo "TC$TCID:$NAME OK "
+
 
 echo "tests finished OK"
 ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
