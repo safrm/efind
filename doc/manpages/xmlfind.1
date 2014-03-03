@@ -2,12 +2,12 @@
 .\"     Title: xmlfind
 .\"    Author: Miroslav Safr <miroslav.safr@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
-.\"      Date: 20140203_1409
+.\"      Date: 20140303_1059
 .\"    Manual: Extended recursive search for documents
-.\"    Source: efind 1.2.2
+.\"    Source: efind 1.2.4
 .\"  Language: English
 .\"
-.TH "XMLFIND" "1" "20140203_1409" "efind 1.2.2" "Extended recursive search for"
+.TH "XMLFIND" "1" "20140303_1059" "efind 1.2.4" "Extended recursive search for"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -31,7 +31,7 @@
 xmlfind \- Extended recursive search for xml files (xml)
 .SH "SYNOPSIS"
 .HP \w'\fBxmlfind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
-\fBxmlfind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only]
+\fBxmlfind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only] [\-ext\ \-\-extension\ <ext>]
 .SH "DESCRIPTION"
 .PP
 Extended recursive search for xml files, searching in filenames, contents, case in/\-sensitive, with whitespaces support and optimized for git cloned repos\&.
@@ -60,6 +60,11 @@ Disables searching in file content (by default enabled)\&.
 \-no \-\-name\-only
 .RS 4
 Print only filenames (by default disabled)\&.
+.RE
+.PP
+\-ext \-\-extension <ext>
+.RS 4
+Change extension for searching pattern\&. (default txt)
 .RE
 .SH "PATTERN"
 .PP

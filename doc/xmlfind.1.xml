@@ -32,6 +32,7 @@
         <arg choice="opt">-nf --no-filenames</arg>
         <arg choice="opt">-nc --no-content</arg>
         <arg choice="opt">-no --name-only</arg>
+        <arg choice="opt">-ext --extension &lt;ext&gt; </arg>
 	</cmdsynopsis>
 </refsynopsisdiv>
 
@@ -81,6 +82,13 @@
         <listitem>
           <para>
             Print only filenames (by default disabled).
+          </para>
+        </listitem>
+      </varlistentry>
+      <varlistentry><term>-ext --extension &lt;ext&gt;</term>
+        <listitem>
+          <para>
+            Change extension for searching pattern. (default txt)
           </para>
         </listitem>
       </varlistentry>
