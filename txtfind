@@ -37,7 +37,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     -h | --help) 
         usage 
-        exit 
+        exit
         ;;
     -cs | --case-sensitive ) 
         CASE_SENS=1 
@@ -48,7 +48,7 @@ while [ $# -gt 0 ]; do
     -nc | --no-content )  
         SEARCH_CONTENT=0 
         ;;
-    -no | --name-only )  
+    -no | --name-only )
         FILENAME_ONLY=1 
         ;;
     -ext | --extension )  
@@ -114,11 +114,11 @@ echo "${FILES}" | \
   echo "$FOUND_COUNT_FN" > $FIFO &
 }
 
-#pass the value back to script
-if [ -e $FIFO ]; then
-  read FOUND_COUNT_FN < $FIFO
-  wait $!
-fi
+  #pass the value back to script
+  if [ -e $FIFO ]; then
+    read FOUND_COUNT_FN < $FIFO
+    wait $!
+  fi
 fi
 
 #content search

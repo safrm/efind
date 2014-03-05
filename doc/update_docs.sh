@@ -3,6 +3,10 @@
 #author: Miroslav Safr <miroslav.safr@gmail.com> 
 #first argument passes release version for releasing package builds
 
+command_exists () {
+    command -v "$1" 1>/dev/null 2>&1 ;
+}
+
 XSLTPROC=/usr/bin/xsltproc 
 if [ ! -e $MANXSL ]; then
 	echo "$XSLTPROC does not exist, exiting.."
@@ -19,8 +23,20 @@ if [ ! -e $MANXSL ]; then
 	MANXSL=http://docbook.sourceforge.net/release/xsl/current/html/docbook.xsl
 fi
 
-#automatic version 
-if command -v appver &>/dev/null; then . appver $1; else APP_SHORT_VERSION=NA ; APP_FULL_VERSION_TAG=NA ; APP_BUILD_DATE=`date +'%Y%m%d_%H%M'`; fi
+#automatic version
+if command_exists appver ; then . appver $1; else APP_SHORT_VERSION=NA ; APP_FULL_VERSION_TAG=NA ; APP_BUILD_DATE=`date +'%Y%m%d_%H%M'`; fi
+
+#first syntax nad DTD check
+if  command_exists jss-xml-validator ; then
+	jss-xml-validator  ./ -dtd /usr/share/sgml/docbook/dtd/xml/4.5/docbookx.dtd
+	if [ $? != 0 ]; then
+		echo "Syntax error"
+		exit 1
+	fi
+else
+	echo  "Syntax and validity check skipped (install jenkins-support-scripts..)"
+fi
+
 
 TEMP_DIR=./tmp
 rm -fr $TEMP_DIR && mkdir $TEMP_DIR
