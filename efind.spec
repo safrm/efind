@@ -7,7 +7,7 @@ Release:    1
 Group:      Development/Tools
 License:    LGPL v2.1
 BuildArch:  noarch
-URL:        http://safrm.net/projects/efind/
+URL:        http://safrm.net/projects/efind
 Vendor:     Miroslav Safr <miroslav.safr@gmail.com>
 Source0:    %{name}-%{version}.tar.bz2
 Autoreq: on
@@ -77,7 +77,7 @@ do
 			echo "syntax error in $TEST, exiting.." 
 			exit 1
 		fi
-done 
+done
 
 %files
 %defattr(-,root,root,-)
