@@ -25,9 +25,7 @@ do
 done
 
 #update documentation
-cd doc
-./update_docs.sh
-cd -
+jss-docs-update ./doc 
 
 mkdir -p -m 0755 $BINDIR
 install -m 0777 -v ./efind  $BINDIR/
