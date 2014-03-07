@@ -2,17 +2,16 @@
 #efind - extended search for documents  - http://safrm.net/projects/efind
 #author:  Miroslav Safr <miroslav.safr@gmail.com>
 BINDIR=/usr/bin/
-DOCDIR=/usr/share/doc
 MANDIR=/usr/share/man
 
 #root check
 USERID=`id -u`
-[ $USERID -eq "0" ] || { 
+[ $USERID -eq "0" ] || {
     echo "I cannot continue, you should be root or run it with sudo!"
     exit 0
 }
 
-#automatic version 
+#automatic version
 if command -v appver 1>/dev/null 2>&1 ; then . appver; else APP_SHORT_VERSION=NA ; APP_FULL_VERSION_TAG=NA ; APP_BUILD_DATE=`date +'%Y%m%d_%H%M'`; fi
 
 #test
@@ -72,9 +71,4 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=$APP_BUILD_DATE/
 MANPAGES=`find ./doc/manpages -type f`
 install -d -m 755 $MANDIR/man1
 install -m 644 $MANPAGES $MANDIR/man1
-
-DOCS="./README ./LICENSE.LGPL"
-install -d -m 755 $DOCDIR/efind
-install -m 644 $DOCS $DOCDIR/efind
-
 
