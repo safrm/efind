@@ -1,7 +1,7 @@
 #/bin/sh
 #efind - extended search for documents  - http://safrm.net/projects/efind
 #author:  Miroslav Safr <miroslav.safr@gmail.com>
-BINDIR=/usr/bin/
+BINDIR=/usr/bin
 MANDIR=/usr/share/man
 
 #root check
@@ -12,8 +12,7 @@ USERID=`id -u`
 }
 
 #automatic version
-if command -v appver 1>/dev/null 2>&1 ; then . appver; else APP_SHORT_VERSION=NA ; APP_FULL_VERSION_TAG=NA ; APP_BUILD_DATE=`date +'%Y%m%d_%H%M'`; fi
-
+if command -v appver 1>/dev/null 2>&1; then . appver; else APP_SHORT_VERSION=NA ; APP_FULL_VERSION_TAG=NA ; APP_BUILD_DATE=`date +'%Y%m%d_%H%M'`; fi
 #test
 for TEST in $(  grep -r -l -h --exclude-dir=.git --exclude-dir=test "#\!/bin/sh" . )
 do

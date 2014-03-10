@@ -10,10 +10,15 @@ BuildArch:  noarch
 URL:        http://safrm.net/projects/efind
 Vendor:     Miroslav Safr <miroslav.safr@gmail.com>
 Source0:    %{name}-%{version}.tar.bz2
-Autoreq: on
-Autoreqprov: on
+Autoreq:        on
+Autoreqprov:    on
+Requires:       html2text
+Requires:       unzip
+Requires:       poppler-utils
+Requires:       xml2
+Requires:       unoconv
 BuildRequires:  appver >= 1.1.1
-BuildRequires: jenkins-support-scripts >= 1.2.3
+BuildRequires:  jenkins-support-scripts >= 1.2.3
 
 %description
 Extended search for documents using common shell utilities
@@ -26,7 +31,7 @@ jss-docs-update ./doc -sv %{version}
 
 %install
 rm -fr %{buildroot}
-mkdir -p %{buildroot}/usr/bin
+mkdir -p %{buildroot}%{_bindir}
 install -m 755 ./efind %{buildroot}/usr/bin/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/efind && rm -f %{buildroot}/usr/bin/efind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/efind && rm -f %{buildroot}/usr/bin/efind.bkp

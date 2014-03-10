@@ -8,8 +8,7 @@ Homepage: http://safrm.net/projects/efind
 
 Package: efind
 Architecture: all
-Depends: html2text, unzip, poppler-utils
-Recommends: xml2, unoconv
+Depends: html2text, unzip, poppler-utils, xml2, unoconv
 Description: extended recursive search for documents, searching in filenames \ 
 	& contents, case in/-sensitive, with whitespaces support and \
 	optimized for git checkout repos
