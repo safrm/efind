@@ -18,7 +18,6 @@ usage() {
     echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
     echo " -no --name-only .................... print only filenames (by default disabled)"
-    echo " -no --name-only .................... print only filenames (by default disabled)"
     echo " -ext --extension  <ext>  ........... choose extension (default txt)"
     echo " "
 }

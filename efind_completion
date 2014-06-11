@@ -1,0 +1,42 @@
+# efind completion                                        -*- shell-script -*-
+
+_efind()
+{
+    local cur 
+    _init_completion || return
+
+    if [[ "$cur" == -* ]]; then
+        COMPREPLY=( $( compgen -W '-h -cs -nf -nc -no
+            --help --case-sensitive --no-filenames --no-content --name-only' -- "$cur" ) )
+    fi
+
+} &&
+
+_txtfind()
+{
+    local cur 
+    _init_completion || return
+
+    if [[ "$cur" == -* ]]; then
+        COMPREPLY=( $( compgen -W '-h -cs -nf -nc -no -ext
+            --help --case-sensitive --no-filenames --no-content --name-only --extension' -- "$cur" ) )
+    fi
+
+} &&
+
+#common
+complete -F _efind -o dirnames -o filenames  docfind
+complete -F _efind -o dirnames -o filenames  efind
+complete -F _efind -o dirnames -o filenames  gcfind
+complete -F _efind -o dirnames -o filenames  htmlfind
+complete -F _efind -o dirnames -o filenames  javafind
+complete -F _efind -o dirnames -o filenames  pdffind
+complete -F _efind -o dirnames -o filenames  pptfind
+complete -F _efind -o dirnames -o filenames  shfind
+complete -F _efind -o dirnames -o filenames  specfind
+
+#extra params
+complete -F _txtfind -o dirnames -o filenames  cppfind
+complete -F _txtfind -o dirnames -o filenames  txtfind
+complete -F _txtfind -o dirnames -o filenames  xmlfind    
+# ex: ts=4 sw=4 et filetype=sh

@@ -11,4 +11,7 @@ specfind /usr/bin/
 txtfind /usr/bin/
 xmlfind /usr/bin/
 
+efind_completion /etc/bash_completion.d/
+
 doc/manpages/* /usr/share/man/man1/
+
