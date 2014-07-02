@@ -14,12 +14,14 @@ usage() {
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
-    echo " -h --help .......................... shows command line help"
-    echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
-    echo " -nf --no-filenames  ................ disable searching in filenames (by default enabled)"
-    echo " -nc --no-content ................... disable searching in file content (by default enabled)"
-    echo " -no --name-only .................... print only filenames (by default disabled)"
-    echo " -ext --extension  <ext>  ........... change default (sh) extension (scripts without extension stays)"
+    echo " -h, --help .......................... shows command line help"
+    echo " -cs, --case-sensitive ............... case sensitive content search (by default it is insensitive)"
+    echo " -nf, --no-filenames  ................ disable searching in filenames (by default enabled)"
+    echo " -nc, --no-content ................... disable searching in file content (by default enabled)"
+    echo " -no, --name-only .................... print only filenames (by default disabled)"
+    echo " -ext, --extension  <ext>  ........... change default (sh) extension (scripts without extension stays)"
+    echo " -sb, --shebang <shebang>  ........... change default shebang filter (#!/bin/sh)"
+    echo " -b, --bash  ......................... use bash searching profile (.bash,-) -sb \"#\!/bin/bash\" "
     echo " "
 }
 
@@ -32,6 +34,7 @@ SEARCH_FILENAMES=1
 SEARCH_CONTENT=1
 FILENAME_ONLY=0
 EXT=sh
+SHEBANG="#\!/bin/sh"
 while [ $# -gt 0 ]; do
   case "$1" in
     -h|--help) usage ; exit  ;;
@@ -40,6 +43,8 @@ while [ $# -gt 0 ]; do
     -nc|--no-content) SEARCH_CONTENT=0 ;;
     -no|--name-only)  FILENAME_ONLY=1 ;;
     -ext|--extension) shift ; EXT=$1 ;;
+    -sb|--shebang) shift ; SHEBANG="$1" ;;
+    -b|--bash) EXT=bash ; SHEBANG="#\!/bin/bash" ;;
     *)      
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 
@@ -89,7 +94,7 @@ if [ -n "${NOEX_FILES}" ]; then
 	trap 'rm -f $FIFO2' 0
 	mkfifo $FIFO2 2> /dev/null
 	echo "${NOEX_FILES}" | while IFS='\n' read -r FILE ; do
-		 if grep -r -q "#\!/bin/sh" "$FILE"  ; then
+		 if grep -r -q "$SHEBANG" "$FILE"  ; then
 		    echo "$FILE" >> $FIFO2 &
 		 fi
 	done
