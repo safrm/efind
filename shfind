@@ -95,7 +95,7 @@ if [ -n "${NOEX_FILES}" ]; then
 	done
 
 	#pass the value back to script
-	if [ -e $FIFO ]; then
+	if [ -e $FIFO2 ]; then
 	  NOEX_FILE_SCRIPTS=`cat $FIFO2`
 	  wait $!
 	fi
