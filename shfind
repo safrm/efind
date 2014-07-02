@@ -19,6 +19,7 @@ usage() {
     echo " -nf --no-filenames  ................ disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
     echo " -no --name-only .................... print only filenames (by default disabled)"
+    echo " -ext --extension  <ext>  ........... change default (sh) extension (scripts without extension stays)"
     echo " "
 }
 
@@ -30,25 +31,16 @@ FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
 SEARCH_CONTENT=1
 FILENAME_ONLY=0
+EXT=sh
 while [ $# -gt 0 ]; do
   case "$1" in
-    -h | --help) 
-        usage 
-        exit 
-        ;;
-    -cs | --case-sensitive ) 
-        CASE_SENS=1 
-        ;;
-    -nf | --no-filenames )  
-        SEARCH_FILENAMES=0 
-        ;;
-    -nc | --no-content )  
-        SEARCH_CONTENT=0 
-        ;;
-    -no | --name-only )  
-        FILENAME_ONLY=1 
-        ;;
-    * )      
+    -h|--help) usage ; exit  ;;
+    -cs|--case-sensitive) CASE_SENS=1 ;;
+    -nf|--no-filenames) SEARCH_FILENAMES=0 ;;
+    -nc|--no-content) SEARCH_CONTENT=0 ;;
+    -no|--name-only)  FILENAME_ONLY=1 ;;
+    -ext|--extension) shift ; EXT=$1 ;;
+    *)      
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 
         elif [ -z "$SEARCH_DIR" ]; then
@@ -60,6 +52,7 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
+EXT_RE=`printf '\.%s$' $EXT`
 
 if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
 	SEARCH_DIR="./"
@@ -82,7 +75,7 @@ find -wholename something --version > /dev/null 2>&1
 
 #sh files first
 ALLFILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/\.git*" | grep -v '^$'`
-FILES=`echo "$ALLFILES" |grep -i "\.sh\$"`
+FILES=`echo "$ALLFILES" | grep -i "$EXT_RE"`
 SHFILES_COUNT=`echo "$FILES"  | grep -v '^$'  | wc -l `
 #echo "$FILES \n-----------"
 
@@ -112,7 +105,7 @@ NOEX_COUNT=`echo "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
 FILES="$FILES\n$NOEX_FILE_SCRIPTS"
 FILES=`echo "$FILES" | grep -v '^$'`
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
-echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.sh/-)\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
+echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.$EXT/-)\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
 FIFO=/tmp/FOUND_COUNT_FN.$$
