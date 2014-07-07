@@ -21,7 +21,7 @@ usage() {
 TCID=10
 testlog() { echo "\033[33mTC$TCID:\033[00m\033[34m$TCNAME:\033[00m\033[36m$*\033[00m"; }
 testfail() { echo "\033[33mTC$TCID:\033[00m\033[34m$TCNAME failed:\033[00m\033[31m$*\033[00m"; exit ${TCID:-1} ;}
-teststart() { TCID=$(($TCID + 1)) ; TCNAME="$1" ; }
+teststart() { TCID=$(($TCID + 1)) ; TCNAME="$1" ; testlog "START" ; }
 testok() { testlog "OK" ;}
 
 START_TIME=`date +'%s'`
