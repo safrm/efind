@@ -34,19 +34,10 @@ while [ $# -gt 0 ]; do
     -ld) BINDIR="./" ;;
     -x) set -x ;;
     * )      
-        if [ -z "$WHAT" ]; then  
-            WHAT=$1 ; 
-        elif [ -z "$SEARCH_DIR" ]; then
-            SEARCH_DIR=$1 ;
-        else
-            echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."; exit 1;        
-        fi 
-        ;;
+        echo "Argument $1 is not supported, exiting.."; usage ; exit 1 ;;
   esac
   shift
 done
-
-
 
 SCRIPTS=cppfind,docfind,gcfind,htmlfind,javafind,pdffind,pptfind,shfind,specfind,txtfind,xmlfind,efind
 echo "scripts count: `echo $SCRIPTS| tr "," "\n" | wc -l`"
