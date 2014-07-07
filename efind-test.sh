@@ -15,6 +15,7 @@ usage() {
     echo " options: "
     echo " --help ............................ shows command line help"
     echo " -ld ............................... use executables from local dir (default from PATH)"
+    echo " -x ................................ enable sh +x (write each command to standard error)"
     echo " "
 }
 TCID=10
@@ -30,10 +31,8 @@ while [ $# -gt 0 ]; do
         usage 
         exit 
         ;;
-    -ld) 
-        BINDIR="./" 
-		#set -e
-        ;;
+    -ld) BINDIR="./" ;;
+    -x) set -x ;;
     * )      
         if [ -z "$WHAT" ]; then  
             WHAT=$1 ; 
