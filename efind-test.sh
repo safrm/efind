@@ -43,7 +43,7 @@ SCRIPTS=cppfind,docfind,gcfind,htmlfind,javafind,pdffind,pptfind,shfind,specfind
 echo "scripts count: `echo $SCRIPTS| tr "," "\n" | wc -l`"
 
 teststart "syntax check"
-for SCRIPT in $(  grep -r -l -h --exclude-dir=test --exclude-dir=doc "#\!/bin/sh" . )
+for SCRIPT in $(  grep -r -l -h --exclude-dir=test --exclude-dir=.git --exclude-dir=doc "#\!/bin/sh" . )
 do
     echo  " $PWD/$SCRIPT "
     sh -n "$SCRIPT"
