@@ -14,15 +14,8 @@ USERID=`id -u`
 
 #automatic version
 if command -v appver 1>/dev/null 2>&1; then . appver; else APP_SHORT_VERSION=NA ; APP_FULL_VERSION_TAG=NA ; APP_BUILD_DATE=`date +'%Y%m%d_%H%M'`; fi
-#test
-for TEST in $(  grep -r -l -h --exclude-dir=.git --exclude-dir=test "#\!/bin/sh" . )
-do
-		sh -n $TEST
-		if  [ $? != 0 ]; then
-			echo "syntax error in $TEST, exiting.." 
-			exit 1
-		fi
-done
+#tests
+./efind-test.sh -ld
 
 #update documentation
 jss-docs-update ./doc 
