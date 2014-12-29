@@ -1,0 +1,115 @@
+#!/bin/sh
+#extended recursive search for/in TODO documents 
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com>
+VERSION=NA                                                                   
+VERSION_DATE=NA
+#support color escape characters on different terminals
+alias echo="/bin/echo -e"
+BASENAME=`basename $0`
+usage() {
+    echo "$BASENAME ${VERSION} - extended recursive search for/in TODO files"
+    echo " http://safrm.net/projects/efind/"
+    echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
+    echo " PATTERN ............................ string (requires \"\" if contains spaces) "
+    echo " options: "
+    echo " -h --help .......................... shows command line help"
+    echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
+    echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
+    echo " -nc --no-content ................... disable searching in file content (by default enabled)"
+    echo " -no --name-only .................... print only filenames (by default disabled)"
+    echo " -fl --filter-lines <tag> ........... print only lines which starts with tag (by default empty)"
+    echo " "
+}
+START_TIME=`date +'%s'`
+CASE_SENS=0
+TOTAL_COUNT=0
+FOUND_COUNT=0
+FOUND_COUNT_FN=0
+SEARCH_FILENAMES=1
+SEARCH_CONTENT=1
+FILENAME_ONLY=0
+EXT=txt
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -h | --help) 
+        usage 
+        exit
+        ;;
+    -cs | --case-sensitive ) 
+        CASE_SENS=1 
+        ;;
+    -nf | --no-filenames )  
+        SEARCH_FILENAMES=0 
+        ;;
+    -nc | --no-content )  
+        SEARCH_CONTENT=0 
+        ;;
+    -no | --name-only )
+        FILENAME_ONLY=1 
+        ;;
+    -fl | --filter-lines )
+        shift ; FILTER_LINES="^$1" ;;
+    * )      
+        if [ -z "$WHAT" ]; then  
+            WHAT=$1 ; 
+        elif [ -z "$SEARCH_DIR" ]; then
+            SEARCH_DIR=$1 ;
+        else
+            echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."; exit 1;        
+        fi 
+        ;;
+  esac
+  shift
+done
+if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
+	SEARCH_DIR="./"
+fi
+#check if terminal supports colors 
+COLORS=
+if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
+    COLORS=" --color=always ";
+fi
+#case sensitive flag - by default ignore cases
+CSF="-i "
+if [ $CASE_SENS -eq 1 ]; then
+    CSF="" 
+fi
+FIND_WHOLENAME_FLAG="-wholename"
+find -wholename something --version > /dev/null 2>&1
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
+FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "todo"`
+FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
+echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT $EXT\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
+#filenames search
+if [ $SEARCH_FILENAMES -eq 1 ]; then
+    echo "${FILES}" | \
+    { while IFS='\n' read -r FILE ; do
+	    # only file basename
+        if [ $FILENAME_ONLY -eq 1 ]; then
+          echo "\033[01;34m$FILE\033[0m";
+        fi
+      done
+    }
+fi
+
+#content search
+if [ $SEARCH_CONTENT -eq 1 ]; then
+    echo "${FILES}" | \
+    { while IFS='\n' read -r FILE ; do
+        RESULT=`cat "$FILE"  2> /dev/null | grep -E "$FILTER_LINES" | grep $COLORS $CSF -E "$WHAT"`
+        RESULT_COUNT=`echo "$RESULT" | wc -l`
+        if [ "$RESULT" != "" ] 
+        then
+          if [ $FILENAME_ONLY -eq 1 ]; then
+            echo "\033[01;34m$FILE\033[0m";
+          else
+            echo "\033[01;34m$FILE\033[0m: $RESULT";
+           fi
+          FOUND_COUNT=$(($FOUND_COUNT + $RESULT_COUNT)) ;
+        fi
+      done
+      ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
+      echo "$BASENAME found \033[42m$FOUND_COUNT lines in $FILES_COUNT\033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+    }
+fi

@@ -10,7 +10,7 @@ _efind()
             --help --case-sensitive --no-filenames --no-content --name-only' -- "$cur" ) )
     fi
 
-} &&
+}
 
 _txtfind()
 {
@@ -21,8 +21,20 @@ _txtfind()
         COMPREPLY=( $( compgen -W '-h -cs -nf -nc -no -ext
             --help --case-sensitive --no-filenames --no-content --name-only --extension' -- "$cur" ) )
     fi
+}
 
-} &&
+_todofind()
+{
+    local cur 
+    _init_completion || return
+
+    if [[ "$cur" == -* ]]; then
+        COMPREPLY=( $( compgen -W '-h -cs -nf -nc -no -fl 
+            --help --case-sensitive --no-filenames --no-content --name-only --filter-lines' -- "$cur" ) )
+    fi
+
+}
+
 
 #common
 complete -F _efind -o dirnames -o filenames  docfind
@@ -39,4 +51,5 @@ complete -F _efind -o dirnames -o filenames  specfind
 complete -F _txtfind -o dirnames -o filenames  cppfind
 complete -F _txtfind -o dirnames -o filenames  txtfind
 complete -F _txtfind -o dirnames -o filenames  xmlfind    
+complete -F _todofind -o dirnames -o filenames  todofind
 # ex: ts=4 sw=4 et filetype=sh

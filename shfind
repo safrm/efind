@@ -81,11 +81,11 @@ find -wholename something --version > /dev/null 2>&1
 #sh files first
 ALLFILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/\.git*" | grep -v '^$'`
 FILES=`echo "$ALLFILES" | grep -i "$EXT_RE"`
-SHFILES_COUNT=`echo "$FILES"  | grep -v '^$'  | wc -l `
+SHFILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
 #echo "$FILES \n-----------"
 
 #files without extension
-NOEX_FILES=`echo "$ALLFILES" |grep -v "[^/]*\.[a-z0-9]*$" `
+NOEX_FILES=`echo "$ALLFILES" | grep -v "[^/]*\.[a-z0-9]*$" `
 #echo "$NOEX_FILES \n-----------"
 
 #filter out non-script ones - don't support whitespaces atm
@@ -94,7 +94,7 @@ if [ -n "${NOEX_FILES}" ]; then
 	trap 'rm -f $FIFO2' 0
 	mkfifo $FIFO2 2> /dev/null
 	echo "${NOEX_FILES}" | while IFS='\n' read -r FILE ; do
-		 if grep -r -q "$SHEBANG" "$FILE"  ; then
+		 if grep -r -q "$SHEBANG" "$FILE" ; then
 		    echo "$FILE" >> $FIFO2 &
 		 fi
 	done
