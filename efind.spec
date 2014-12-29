@@ -84,7 +84,7 @@ install -m 644 $MANPAGES %{buildroot}%{_mandir}/man1
 rm -fr %{buildroot}
 
 %check
-for TEST in $(  grep -r -l -h --exclude-dir=test "#\!/bin/sh" . )
+for TEST in $(  grep -r -l -h --exclude-dir=test --exclude-dir=doc "#\!/bin/sh" . )
 do
 		sh -n "$TEST"
 		if  [ $? != 0 ]; then
