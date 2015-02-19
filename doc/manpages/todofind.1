@@ -2,12 +2,12 @@
 .\"     Title: todofind
 .\"    Author: Miroslav Safr <miroslav.safr@gmail.com>
 .\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
-.\"      Date: 20150204_1457
+.\"      Date: 20150219_1312
 .\"    Manual: Extended recursive search for/in TODO documents 
 .\"    Source: efind 1.2.8
 .\"  Language: English
 .\"
-.TH "TODOFIND" "1" "20150204_1457" "efind 1.2.8" "Extended recursive search for/"
+.TH "TODOFIND" "1" "20150219_1312" "efind 1.2.8" "Extended recursive search for/"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -31,7 +31,7 @@
 todofind \- Extended recursive search for/in TODO documents
 .SH "SYNOPSIS"
 .HP \w'\fBtodofind\ [OPTIONS]\&.\&.\&.\ PATTERN\ [SEARCHING_DIR]\fR\ 'u
-\fBtodofind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only] [\-fl\ \-\-filter\-lines\ <tag>]
+\fBtodofind [OPTIONS]\&.\&.\&. PATTERN [SEARCHING_DIR]\fR [\-h\ \-\-help] [\-cs\ \-\-case\-sensitive] [\-nf\ \-\-no\-filenames] [\-nc\ \-\-no\-content] [\-no\ \-\-name\-only] [\-fl\ \-\-filter\-lines\ <tag>] [\-d\ \-\-done] [\-t\ \-\-todo]
 .SH "DESCRIPTION"
 .PP
 Extended recursive search for/in TODO files\&. (todo,TODO, TODO\&.md, Todo\&.txt \&.\&.)
@@ -65,6 +65,38 @@ Print only filenames (by default disabled)\&.
 \-fl \-\-filter\-lines <tag>
 .RS 4
 Print only lines which starts with tag (by default empty)\&. For example: "\-" or "TODO" or "DONE"\&.
+.RE
+.PP
+\-d \-\-done
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+            Predefind filters for DONE records:  (\*(Aq^DONE\*(Aq or \*(Aq^\- [x]\*(Aq)"
+            
+.fi
+.if n \{\
+.RE
+.\}
+.sp
+.RE
+.PP
+\-t \-\-todo
+.RS 4
+.sp
+.if n \{\
+.RS 4
+.\}
+.nf
+            Predefind filters for TODO records (\*(Aq^TODO\*(Aq or \*(Aq^\- [ ]\*(Aq or \*(Aq^\- \*(Aq)
+            
+.fi
+.if n \{\
+.RE
+.\}
+.sp
 .RE
 .SH "PATTERN"
 .PP

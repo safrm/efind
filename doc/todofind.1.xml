@@ -34,6 +34,8 @@
         <arg choice="opt">-nc --no-content</arg>
         <arg choice="opt">-no --name-only</arg>
         <arg choice="opt">-fl --filter-lines &lt;tag&gt; </arg>
+        <arg choice="opt">-d --done</arg>
+        <arg choice="opt">-t --todo</arg>
 	</cmdsynopsis>
 </refsynopsisdiv>
 
@@ -94,8 +96,28 @@
           </para>
         </listitem>
       </varlistentry>
+
+    <varlistentry><term>-d --done</term>
+        <listitem>
+          <para>
+        	<screen><![CDATA[
+            Predefind filters for DONE records:  ('^DONE' or '^- [x]')"
+            ]]></screen>
+          </para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry><term>-t --todo</term>
+        <listitem>
+          <para>
+        	<screen><![CDATA[
+            Predefind filters for TODO records ('^TODO' or '^- [ ]' or '^- ')
+            ]]></screen>
+          </para>
+        </listitem>
+      </varlistentry>
     </variablelist>
-    
+
   </refsect1>
   <refsect1>
     <title>PATTERN</title>

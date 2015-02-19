@@ -71,6 +71,7 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE
 install -m 755 ./todofind %{buildroot}/usr/bin/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=%{version}/" %{buildroot}/usr/bin/todofind && rm -f %{buildroot}/usr/bin/todofind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=%{APP_BUILD_DATE}/" %{buildroot}/usr/bin/todofind && rm -f %{buildroot}/usr/bin/todofind.bkp
+install -m 755 ./pyfind %{buildroot}/usr/bin/
 
 mkdir -p -m 0755 %{buildroot}%{_sysconfdir}/bash_completion.d
 install -m 0777 -v ./efind_completion %{buildroot}%{_sysconfdir}/bash_completion.d
@@ -103,6 +104,7 @@ done
 %{_bindir}/javafind
 %{_bindir}/pdffind
 %{_bindir}/pptfind
+%{_bindir}/pyfind
 %{_bindir}/shfind
 %{_bindir}/specfind
 %{_bindir}/txtfind

@@ -6,6 +6,7 @@ htmlfind /usr/bin/
 javafind /usr/bin/
 pdffind /usr/bin/
 pptfind /usr/bin/
+pyfind /usr/bin/
 shfind /usr/bin/
 specfind /usr/bin/
 txtfind /usr/bin/

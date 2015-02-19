@@ -11,6 +11,7 @@ htmlfind ................. htm,html files recursive search
 javafind ................. java files recursive search
 pdffind .................. pdf files recursive search
 pptfind .................. ppt, odp files recursive search
+pyfind ................... textfind wrapper for python files 
 shfind ................... shell script files recursive search
 specfind ................. rpm spec files recursive search
 txtfind .................. text files recursive search
