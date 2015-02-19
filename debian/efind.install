@@ -1,19 +1,19 @@
-efind /usr/bin/
-docfind /usr/bin/
-cppfind /usr/bin/
-gcfind /usr/bin/
-htmlfind /usr/bin/
-javafind /usr/bin/
-pdffind /usr/bin/
-pptfind /usr/bin/
-pyfind /usr/bin/
-shfind /usr/bin/
-specfind /usr/bin/
-txtfind /usr/bin/
-todofind /usr/bin/
-xmlfind /usr/bin/
+efind usr/bin/
+docfind usr/bin/
+cppfind usr/bin/
+gcfind usr/bin/
+htmlfind usr/bin/
+javafind usr/bin/
+pdffind usr/bin/
+pptfind usr/bin/
+pyfind usr/bin/
+shfind usr/bin/
+specfind usr/bin/
+txtfind usr/bin/
+todofind usr/bin/
+xmlfind usr/bin/
 
-efind_completion /etc/bash_completion.d/
+efind_completion etc/bash_completion.d/
 
-doc/manpages/* /usr/share/man/man1/
+doc/manpages/* usr/share/man/man1/
 
