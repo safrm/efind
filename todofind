@@ -19,6 +19,8 @@ usage() {
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
     echo " -no --name-only .................... print only filenames (by default disabled)"
     echo " -fl --filter-lines <tag> ........... print only lines which starts with tag (by default empty)"
+    echo " -d --done .......................... show only done (by default no filter) ('^DONE' or '^- [x]')"
+    echo " -t --todo .......................... show only todo (by default no filter) ('^TODO' or '^- [ ]' or '^- ')"
     echo " "
 }
 START_TIME=`date +'%s'`
@@ -29,29 +31,17 @@ FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
 SEARCH_CONTENT=1
 FILENAME_ONLY=0
-EXT=txt
 while [ $# -gt 0 ]; do
     case "$1" in
-        -h | --help)
-            usage
-            exit
-        ;;
-        -cs | --case-sensitive )
-            CASE_SENS=1
-        ;;
-        -nf | --no-filenames )
-            SEARCH_FILENAMES=0
-        ;;
-        -nc | --no-content )
-            SEARCH_CONTENT=0
-        ;;
-        -no | --name-only )
-            FILENAME_ONLY=1
-        ;;
-        -fl | --filter-lines )
-        shift ; FILTER_LINES="^$1" ;;
-        * )
-            if [ -z "$WHAT" ]; then
+        -h|--help) usage ; exit ;;
+        -cs|--case-sensitive) CASE_SENS=1 ;;
+        -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
+        -nc|--no-content)     SEARCH_CONTENT=0 ;;
+        -no|--name-only)      FILENAME_ONLY=1 ;;
+        -fl|--filter-lines) shift ; FILTER_USER="^$1" ;;
+        -d|--done)           FILTER_DONE="^DONE|^-\ \[x\]" ;; 
+        -t|--todo)           FILTER_TODO="^TODO|^-\ \[ \]|^-\ [^\[]" ;; 
+        * ) if [ -z "$WHAT" ]; then
                 WHAT=$1 ;
                 elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1 ;
@@ -62,6 +52,18 @@ while [ $# -gt 0 ]; do
         esac
         shift
     done
+    #compose filters
+    [ -n "$FILTER_USER" ] && FILTER_LINES="$FILTER_USER"
+    if [ -n "$FILTER_TODO" -o -n "$FILTER_DONE" ]; then 
+        if [ -n "$FILTER_TODO" ]; then 
+           [ -z "$FILTER_LINES" ] && FILTER_LINES="$FILTER_TODO" || FILTER_LINES="$FILTER_LINES|$FILTER_TODO"
+        fi
+        if [ -n "$FILTER_DONE" ]; then 
+           [ -z "$FILTER_LINES" ] && FILTER_LINES="$FILTER_DONE" || FILTER_LINES="$FILTER_LINES|$FILTER_DONE"
+        fi
+        FILTER_LINES="($FILTER_LINES)"
+    fi
+
     if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
         SEARCH_DIR="./"
     fi
@@ -80,7 +82,7 @@ while [ $# -gt 0 ]; do
     [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
     FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "todo"`
     FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
-    echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT $EXT\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
+    echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT \033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
     #filenames search
     if [ $SEARCH_FILENAMES -eq 1 ]; then
         echo "${FILES}" | \
@@ -97,7 +99,7 @@ while [ $# -gt 0 ]; do
     if [ $SEARCH_CONTENT -eq 1 ]; then
         echo "${FILES}" | \
         { while IFS='\n' read -r FILE ; do
-                RESULT=`cat "$FILE"  2> /dev/null | grep -E "$FILTER_LINES" | grep $COLORS $CSF -E "$WHAT"`
+                RESULT=`cat "$FILE"  2> /dev/null | grep -E "$FILTER_LINES"  2> /dev/null| grep $COLORS $CSF -E "$WHAT"`
                 RESULT_COUNT=`echo "$RESULT" | wc -l`
                 if [ "$RESULT" != "" ]
                 then
