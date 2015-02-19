@@ -1,8 +1,8 @@
 #!/bin/sh
 #extended recursive search for documents - combined files (html, doc, pdf, ppt, txt)
 #web: http://safrm.net/projects/efind
-#author: Miroslav Safr <miroslav.safr@gmail.com> 
-VERSION=NA                                                                   
+#author: Miroslav Safr <miroslav.safr@gmail.com>
+VERSION=NA
 VERSION_DATE=NA
 
 #support color escape characters on different terminals
@@ -24,14 +24,14 @@ usage() {
 
 if [ "x$1" = "x--help" ]
 then
-    usage 
-	exit
+    usage
+    exit
 fi
 
 if [  $# -eq 0 ]
 then
-    usage 
-	exit 1;
+    usage
+    exit 1;
 fi
 
 START_TIME=`date +'%s'`

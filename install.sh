@@ -18,7 +18,7 @@ if command -v appver 1>/dev/null 2>&1; then . appver; else APP_SHORT_VERSION=NA 
 ./efind-test.sh -ld
 
 #update documentation
-jss-docs-update ./doc 
+jss-docs-update ./doc
 
 mkdir -p -m 0755 $BINDIR
 install -m 0777 -v ./efind  $BINDIR/
@@ -60,6 +60,8 @@ sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=$APP_BUILD_DATE/
 install -m 0777 -v ./xmlfind  $BINDIR/
 sed -i".bkp" "1,/^VERSION=/s/^VERSION=.*/VERSION=$APP_FULL_VERSION_TAG/" $BINDIR/xmlfind && rm -f $BINDIR/xmlfind.bkp
 sed -i".bkp" "1,/^VERSION_DATE=/s/^VERSION_DATE=.*/VERSION_DATE=$APP_BUILD_DATE/" $BINDIR/xmlfind && rm -f $BINDIR/xmlfind.bkp
+
+install -m 0777 -v ./pyfind  $BINDIR/
 
 mkdir -p -m 0755 $COMPLETION_DIR
 install -m 0777 -v ./efind_completion  $COMPLETION_DIR/

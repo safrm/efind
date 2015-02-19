@@ -1,0 +1,5 @@
+#!/bin/sh
+#extended recursive search for documents - fy files (.py)
+#web: http://safrm.net/projects/efind
+#author: Miroslav Safr <miroslav.safr@gmail.com>
+txtfind -ext py $*

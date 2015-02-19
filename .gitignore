@@ -6,3 +6,4 @@ debian/efind/*
 rpm/*
 *.changes
 doc/tmp/*
+*~
