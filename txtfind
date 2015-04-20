@@ -55,7 +55,7 @@ while [ $# -gt 0 ]; do
         * )
             if [ -z "$WHAT" ]; then
                 WHAT=$1 ;
-                elif [ -z "$SEARCH_DIR" ]; then
+            elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1 ;
             else
                 echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."; exit 1;
