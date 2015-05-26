@@ -22,16 +22,12 @@ usage() {
     echo " "
 }
 
-if [ "x$1" = "x--help" ]
-then
-    usage
-    exit
+if [ "x$1" = "x--help" ]; then
+    usage ; exit 0
 fi
 
-if [  $# -eq 0 ]
-then
-    usage
-    exit 1;
+if [  $# -eq 0 ]; then
+    usage ; exit 1
 fi
 
 START_TIME=`date +'%s'`

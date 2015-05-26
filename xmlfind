@@ -70,7 +70,7 @@ while [ $# -gt 0 ]; do
 
     #check if terminal supports colors
     COLORS=
-    if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
+    if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
         COLORS=" --color=always "
     fi
 

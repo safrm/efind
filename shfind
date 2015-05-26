@@ -47,11 +47,11 @@ while [ $# -gt 0 ]; do
         -b|--bash) EXT=bash ; SHEBANG="#\!/bin/bash" ;;
         *)
             if [ -z "$WHAT" ]; then
-                WHAT=$1 ;
-                elif [ -z "$SEARCH_DIR" ]; then
-                SEARCH_DIR=$1 ;
+                WHAT=$1
+            elif [ -z "$SEARCH_DIR" ]; then
+                SEARCH_DIR=$1
             else
-                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."; exit 1;
+                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1
             fi
         ;;
     esac
@@ -65,8 +65,8 @@ fi
 
 #check if terminal supports colors
 COLORS=
-if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
-    COLORS=" --color=always ";
+if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
+    COLORS=" --color=always "
 fi
 #case sensitive flag - by default ignore cases
 CSF="-i "
@@ -98,7 +98,7 @@ if [ -n "${NOEX_FILES}" ]; then
             echo "$FILE" >> $FIFO2 &
         fi
     done
-    
+
     #pass the value back to script
     if [ -e $FIFO2 ]; then
         NOEX_FILE_SCRIPTS=`cat $FIFO2`
@@ -122,20 +122,19 @@ if [ $SEARCH_FILENAMES -eq 1 ]; then
     echo "${FILES}" | \
     { while IFS='\n' read -r FILE ; do
             # only file basename
-            RESULT=`echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
-            if [ "$RESULT" != "" ]
-            then
+            RESULT=`echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+            if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
-                    echo "\033[01;34m$FILE\033[0m";
+                    echo "\033[01;34m$FILE\033[0m"
                 else
-                    echo "\033[01;34m$FILE\033[0m: $RESULT";
+                    echo "\033[01;34m$FILE\033[0m: $RESULT"
                 fi
-                FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
+                FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1))
             fi
         done
         echo "$FOUND_COUNT_FN" > $FIFO &
     }
-    
+
     #pass the value back to script
     if [ -e $FIFO ]; then
         read FOUND_COUNT_FN < $FIFO
@@ -148,17 +147,16 @@ if [ $SEARCH_CONTENT -eq 1 ]; then
     echo "${FILES}" | \
     { while IFS='\n' read -r FILE ; do
             RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
-            if [ "$RESULT" != "" ]
-            then
+            if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
-                    echo "\033[01;34m$FILE\033[0m";
+                    echo "\033[01;34m$FILE\033[0m"
                 else
-                    echo "\033[01;34m$FILE\033[0m: $RESULT";
+                    echo "\033[01;34m$FILE\033[0m: $RESULT"
                 fi
-                FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
+                FOUND_COUNT=$(($FOUND_COUNT + 1))
             fi
         done
-        
+
         ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
         echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
     }
