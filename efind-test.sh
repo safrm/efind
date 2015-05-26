@@ -1,8 +1,8 @@
 #!/bin/sh
 #extended recursive search for documents - sh script files (sh, sh scripts without extension)
 #web: http://safrm.net/projects/efind
-#author: Miroslav Safr <miroslav.safr@gmail.com> 
-VERSION=NA                                                                   
+#author: Miroslav Safr <miroslav.safr@gmail.com>
+VERSION=NA
 VERSION_DATE=NA
 
 #support color escape characters on different terminals
@@ -19,22 +19,18 @@ usage() {
     echo " "
 }
 TCID=10
-testlog() { echo "\033[33mTC$TCID:\033[00m\033[34m$TCNAME:\033[00m\033[36m$*\033[00m"; }
-testfail() { echo "\033[33mTC$TCID:\033[00m\033[34m$TCNAME failed:\033[00m\033[31m$*\033[00m"; exit ${TCID:-1} ;}
+testlog() { echo "\033[33mTC$TCID:\033[00m\033[34m$TCNAME:\033[00m\033[36m$*\033[00m" ; }
+testfail() { echo "\033[33mTC$TCID:\033[00m\033[34m$TCNAME failed:\033[00m\033[31m$*\033[00m" ; exit ${TCID:-1} ; }
 teststart() { TCID=$(($TCID + 1)) ; TCNAME="$1" ; testlog "START" ; }
 testok() { testlog "OK" ;}
 
 START_TIME=`date +'%s'`
 while [ $# -gt 0 ]; do
   case "$1" in
-    --help) 
-        usage 
-        exit 
-        ;;
+    --help) usage ; exit ;;
     -ld) BINDIR="./" ;;
     -x) set -x ;;
-    * )      
-        echo "Argument $1 is not supported, exiting.."; usage ; exit 1 ;;
+    *)  echo "Argument $1 is not supported, exiting.." ; usage ; exit 1 ;;
   esac
   shift
 done
@@ -50,7 +46,7 @@ do
 	if  [ $? -ne 0 ]; then
 		testfail "syntax error $SCRIPT"
 	fi
-done 
+done
 testok
 
 
@@ -59,18 +55,18 @@ for SCRIPT in `echo $SCRIPTS | tr "," "\n" `
 do
     echo  " $BINDIR$SCRIPT"
     sh $BINDIR$SCRIPT --help
-    if [ $? -ne 0 ] ; then 
-        testfail 
+    if [ $? -ne 0 ]; then
+        testfail
     fi
-done 
+done
 testok
 
 teststart "no-pattern-fails"
 for SCRIPT in `echo "docfind,xmlfind,efind" | tr "," "\n" `
 do
     echo  " $BINDIR$SCRIPT "
-    sh $BINDIR$SCRIPT 
-    if [ $? -ne 1 ] ; then 
+    sh $BINDIR$SCRIPT
+    if [ $? -ne 1 ]; then
         testfail
     fi
 done
@@ -80,8 +76,8 @@ teststart "no-pattern-recursive-cat"
 for SCRIPT in `echo "cppfind,gcfind,htmlfind,javafind,pdffind,pptfind,shfind,specfind,txtfind" | tr "," "\n" `
 do
     echo  " $BINDIR$SCRIPT "
-    sh $BINDIR$SCRIPT 
-    if [ $? -ne 0 ] ; then 
+    sh $BINDIR$SCRIPT
+    if [ $? -ne 0 ]; then
         testfail
     fi
 done
@@ -93,7 +89,7 @@ for SCRIPT in `echo $SCRIPTS | tr "," "\n" `
 do
     echo  " $BINDIR$SCRIPT String2find ./test"
     sh $BINDIR$SCRIPT String2find ./test
-    if [ $? -ne 0 ] ; then 
+    if [ $? -ne 0 ]; then
         testfail
     fi
 done
@@ -104,7 +100,7 @@ for SCRIPT in `echo $SCRIPTS | tr "," "\n" `
 do
     echo  " $BINDIR$SCRIPT String2find ./test -no"
     sh $BINDIR$SCRIPT String2find ./test -no
-    if [ $? -ne 0 ] ; then 
+    if [ $? -ne 0 ]; then
         testfail
     fi
 done
@@ -115,7 +111,7 @@ for SCRIPT in `echo $SCRIPTS | tr "," "\n" `
 do
     echo  " $BINDIR$SCRIPT String2find ./test -cs"
     sh $BINDIR$SCRIPT String2find ./test -cs
-    if [ $? -ne 0 ] ; then 
+    if [ $? -ne 0 ]; then
         testfail
     fi
 done
@@ -126,7 +122,7 @@ for SCRIPT in `echo $SCRIPTS | tr "," "\n" `
 do
     echo  " $BINDIR$SCRIPT String2find ./test -nf"
     sh $BINDIR$SCRIPT String2find ./test -nf
-    if [ $? -ne 0 -a "x$SCRIPT" != "xgcfind" ] ; then 
+    if [ $? -ne 0 -a "x$SCRIPT" != "xgcfind" ]; then
         testfail
     fi
 done
@@ -137,7 +133,7 @@ for SCRIPT in `echo $SCRIPTS | tr "," "\n" `
 do
     echo  " $BINDIR$SCRIPT String2find ./test -nc"
     sh $BINDIR$SCRIPT String2find ./test -nc
-    if [ $? -ne 0 ] ; then 
+    if [ $? -ne 0 ]; then
         testfail
     fi
 done
@@ -147,7 +143,7 @@ teststart "txtfind-python-ext"
 SCRIPT=txtfind
 echo  " $BINDIR$SCRIPT String2find ./test -ext py"
 sh $BINDIR$SCRIPT String2find ./test -nc
-if [ $? -ne 0 ] ; then 
+if [ $? -ne 0 ]; then
     testfail
 fi
 testok
@@ -156,7 +152,7 @@ teststart "txtfind-python-ext-filenames-only"
 SCRIPT=txtfind
 echo  " $BINDIR$SCRIPT pyth ./test -ext py -nc"
 sh $BINDIR$SCRIPT pyth ./test -ext py -nc
-if [ $? -ne 0 ] ; then 
+if [ $? -ne 0 ]; then
     testfail
 fi
 testok
@@ -165,7 +161,7 @@ teststart "xmlfind-semaphored-ext"
 SCRIPT=xmlfind
 echo  " $BINDIR$SCRIPT String2find ./test -ext sem"
 sh $BINDIR$SCRIPT String2find ./test -ext sem
-if [ $? -ne 0 ] ; then 
+if [ $? -ne 0 ]; then
     testfail
 fi
 testok
@@ -174,7 +170,7 @@ teststart "cppfind-ext"
 SCRIPT=cppfind
 echo  " $BINDIR$SCRIPT String2find ./test -ext h"
 sh $BINDIR$SCRIPT String2find ./test -ext h
-if [ $? -ne 0 ] ; then 
+if [ $? -ne 0 ]; then
     testfail
 fi
 testok

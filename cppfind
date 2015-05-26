@@ -31,67 +31,52 @@ FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
 SEARCH_CONTENT=1
 FILENAME_ONLY=0
-EXT="h$\|cpp"
+EXT="h$\|cpp|cxx|cc"
 while [ $# -gt 0 ]; do
     case "$1" in
-        -h | --help)
-            usage
-            exit
-        ;;
-        -cs | --case-sensitive )
-            CASE_SENS=1
-        ;;
-        -nf | --no-filenames )
-            SEARCH_FILENAMES=0
-        ;;
-        -nc | --no-content )
-            SEARCH_CONTENT=0
-        ;;
-        -no | --name-only )
-            FILENAME_ONLY=1
-        ;;
-        -ext | --extension )
-            shift
-            EXT=$1
-        ;;
-        * )
-            if [ -z "$WHAT" ]; then
+        -h|--help)            usage ; exit 0 ;;
+        -cs|--case-sensitive) CASE_SENS=1 ;;
+        -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
+        -nc|--no-content)     SEARCH_CONTENT=0 ;;
+        -no|--name-only)      FILENAME_ONLY=1 ;;
+        -ext|--extension)     shift ; EXT=$1 ;;
+        *)  if [ -z "$WHAT" ]; then
                 WHAT=$1 ;
                 elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1 ;
             else
-                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."; exit 1;
+                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1 ;
             fi
         ;;
         esac
         shift
     done
     EXT_RE=`printf '\.%s$' $EXT`
-    
+
     if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
         SEARCH_DIR="./"
     fi
-    
+
     #check if terminal supports colors
     COLORS=
-    if [ -x /usr/bin/tput ] && tput setaf > /dev/null; then
-        COLORS=" --color=always ";
+    if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
+        COLORS=" --color=always "
     fi
-    
+
     #case sensitive flag - by default ignore cases
     CSF="-i "
     if [ $CASE_SENS -eq 1 ]; then
         CSF=""
     fi
-    
+
     FIND_WHOLENAME_FLAG="-wholename"
     find -wholename something --version > /dev/null 2>&1
     [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
-    
+
     FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "$EXT_RE"`
     FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
     echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT $EXT\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
-    
+
     #filenames search
     FIFO=/tmp/FOUND_COUNT_FN.$$
     trap 'rm -f $FIFO' 0
@@ -101,26 +86,25 @@ while [ $# -gt 0 ]; do
         { while IFS='\n' read -r FILE ; do
                 # only file basename
                 RESULT=`echo "$FILE" |   sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
-                if [ "$RESULT" != "" ]
-                then
+                if [ "$RESULT" != "" ]; then
                     if [ $FILENAME_ONLY -eq 1 ]; then
-                        echo "\033[01;34m$FILE\033[0m";
+                        echo "\033[01;34m$FILE\033[0m"
                     else
-                        echo "\033[01;34m$FILE\033[0m: $RESULT";
+                        echo "\033[01;34m$FILE\033[0m: $RESULT"
                     fi
                     FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1)) ;
                 fi
             done
             echo "$FOUND_COUNT_FN" > $FIFO &
         }
-        
+
         #pass the value back to script
         if [ -e $FIFO ]; then
             read FOUND_COUNT_FN < $FIFO
             wait $!
         fi
     fi
-    
+
     #content search
     if [ $SEARCH_CONTENT -eq 1 ]; then
         echo "${FILES}" | \
@@ -129,17 +113,15 @@ while [ $# -gt 0 ]; do
                 if [ "$RESULT" != "" ]
                 then
                     if [ $FILENAME_ONLY -eq 1 ]; then
-                        echo "\033[01;34m$FILE\033[0m";
+                        echo "\033[01;34m$FILE\033[0m"
                     else
-                        echo "\033[01;34m$FILE\033[0m: $RESULT";
+                        echo "\033[01;34m$FILE\033[0m: $RESULT"
                     fi
-                    FOUND_COUNT=$(($FOUND_COUNT + 1)) ;
+                    FOUND_COUNT=$(($FOUND_COUNT + 1))
                 fi
             done
-            
+
             ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
             echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
         }
     fi
-    
-    
