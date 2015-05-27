@@ -45,7 +45,7 @@ while [ $# -gt 0 ]; do
                 elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1 ;
             else
-                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1 ;
+                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1
             fi
         ;;
         esac
@@ -54,7 +54,7 @@ while [ $# -gt 0 ]; do
     EXT_RE=`printf '\.%s$' $EXT`
 
     if [ -z "$WHAT" ]; then
-        echo "You have to specify searching pattern, exiting.." ; exit 1 ;
+        echo "You have to specify searching pattern, exiting.." ; exit 1
     fi
 
     if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
@@ -65,7 +65,7 @@ while [ $# -gt 0 ]; do
     if [ ! -e "/usr/bin/xml2" ]
     then
         echo "Not installed xml2, exiting.."
-        exit 1;
+        exit 1
     fi
 
     #check if terminal supports colors

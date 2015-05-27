@@ -46,7 +46,7 @@ while [ $# -gt 0 ]; do
             elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1
             else
-                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."; exit 1;
+                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."; exit 1
             fi
         ;;
         esac
@@ -71,7 +71,7 @@ while [ $# -gt 0 ]; do
     #check if terminal supports colors
     COLORS=
     if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
-        COLORS=" --color=always ";
+        COLORS=" --color=always "
     fi
 
     #case sensitive flag - by default ignore cases
