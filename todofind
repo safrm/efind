@@ -4,6 +4,7 @@
 #author: Miroslav Safr <miroslav.safr@gmail.com>
 VERSION=NA
 VERSION_DATE=NA
+
 #support color escape characters on different terminals
 alias echo="/bin/echo -e"
 BASENAME=`basename $0`
@@ -14,6 +15,7 @@ usage() {
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
     echo " -h --help .......................... shows command line help"
+    echo " -V, --version  ..................... prints version of scripts"    
     echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
     echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
@@ -23,6 +25,7 @@ usage() {
     echo " -t --todo .......................... show only todo (by default no filter) ('^TODO' or '^- [ ]' or '^- ')"
     echo " "
 }
+
 START_TIME=`date +'%s'`
 CASE_SENS=0
 TOTAL_COUNT=0
@@ -33,7 +36,8 @@ SEARCH_CONTENT=1
 FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
     case "$1" in
-        -h|--help) usage ; exit ;;
+        -h|--help)            usage ; exit 0 ;;
+        -V|--version)         echo "`basename $0` ${VERSION} ${VERSION_DATE}" ; exit 0 ;;
         -cs|--case-sensitive) CASE_SENS=1 ;;
         -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
@@ -41,7 +45,7 @@ while [ $# -gt 0 ]; do
         -fl|--filter-lines) shift ; FILTER_USER="^$1" ;;
         -d|--done)           FILTER_DONE="^DONE|^-\ \[x\]" ;;
         -t|--todo)           FILTER_TODO="^TODO|^-\ \[ \]|^-\ [^\[]" ;;
-        * ) if [ -z "$WHAT" ]; then
+        *) if [ -z "$WHAT" ]; then
                 WHAT=$1
             elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1
@@ -51,69 +55,70 @@ while [ $# -gt 0 ]; do
         ;;
         esac
         shift
-    done
-    #compose filters
-    [ -n "$FILTER_USER" ] && FILTER_LINES="$FILTER_USER"
-    if [ -n "$FILTER_TODO" -o -n "$FILTER_DONE" ]; then
-        if [ -n "$FILTER_TODO" ]; then
-           [ -z "$FILTER_LINES" ] && FILTER_LINES="$FILTER_TODO" || FILTER_LINES="$FILTER_LINES|$FILTER_TODO"
-        fi
-        if [ -n "$FILTER_DONE" ]; then
-           [ -z "$FILTER_LINES" ] && FILTER_LINES="$FILTER_DONE" || FILTER_LINES="$FILTER_LINES|$FILTER_DONE"
-        fi
-        FILTER_LINES="($FILTER_LINES)"
+done
+#compose filters
+[ -n "$FILTER_USER" ] && FILTER_LINES="$FILTER_USER"
+if [ -n "$FILTER_TODO" -o -n "$FILTER_DONE" ]; then
+    if [ -n "$FILTER_TODO" ]; then
+       [ -z "$FILTER_LINES" ] && FILTER_LINES="$FILTER_TODO" || FILTER_LINES="$FILTER_LINES|$FILTER_TODO"
     fi
-
-    if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
-        SEARCH_DIR="./"
+    if [ -n "$FILTER_DONE" ]; then
+       [ -z "$FILTER_LINES" ] && FILTER_LINES="$FILTER_DONE" || FILTER_LINES="$FILTER_LINES|$FILTER_DONE"
     fi
+    FILTER_LINES="($FILTER_LINES)"
+fi
 
-    #check if terminal supports colors
-    COLORS=
-    if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
-        COLORS=" --color=always "
-    fi
+if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
+    SEARCH_DIR="./"
+fi
 
-    #case sensitive flag - by default ignore cases
-    CSF="-i "
-    if [ $CASE_SENS -eq 1 ]; then
-        CSF=""
-    fi
-    FIND_WHOLENAME_FLAG="-wholename"
-    find -wholename something --version > /dev/null 2>&1
-    [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
+#check if terminal supports colors
+COLORS=
+if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
+    COLORS=" --color=always "
+fi
 
-    FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "todo"`
-    FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
-    echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT \033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
-    #filenames search
-    if [ $SEARCH_FILENAMES -eq 1 ]; then
-        echo "${FILES}" | \
-        { while IFS='\n' read -r FILE ; do
-                # only file basename
+#case sensitive flag - by default ignore cases
+CSF="-i "
+if [ $CASE_SENS -eq 1 ]; then
+    CSF=""
+fi
+
+FIND_WHOLENAME_FLAG="-wholename"
+find -wholename something --version > /dev/null 2>&1
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
+
+FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "todo"`
+FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
+echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT \033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
+#filenames search
+if [ $SEARCH_FILENAMES -eq 1 ]; then
+    echo "${FILES}" | \
+    { while IFS='\n' read -r FILE ; do
+            # only file basename
+            if [ $FILENAME_ONLY -eq 1 ]; then
+                echo "\033[01;34m$FILE\033[0m"
+            fi
+        done
+    }
+fi
+
+#content search
+if [ $SEARCH_CONTENT -eq 1 ]; then
+    echo "${FILES}" | \
+    { while IFS='\n' read -r FILE ; do
+            RESULT=`cat "$FILE"  2> /dev/null | grep -E "$FILTER_LINES"  2> /dev/null| grep $COLORS $CSF -E "$WHAT"`
+            RESULT_COUNT=`echo "$RESULT" | wc -l`
+            if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
                     echo "\033[01;34m$FILE\033[0m"
+                else
+                    echo "\033[01;34m$FILE\033[0m: $RESULT"
                 fi
-            done
-        }
-    fi
-
-    #content search
-    if [ $SEARCH_CONTENT -eq 1 ]; then
-        echo "${FILES}" | \
-        { while IFS='\n' read -r FILE ; do
-                RESULT=`cat "$FILE"  2> /dev/null | grep -E "$FILTER_LINES"  2> /dev/null| grep $COLORS $CSF -E "$WHAT"`
-                RESULT_COUNT=`echo "$RESULT" | wc -l`
-                if [ -n "$RESULT" ]; then
-                    if [ $FILENAME_ONLY -eq 1 ]; then
-                        echo "\033[01;34m$FILE\033[0m"
-                    else
-                        echo "\033[01;34m$FILE\033[0m: $RESULT"
-                    fi
-                    FOUND_COUNT=$(($FOUND_COUNT + $RESULT_COUNT))
-                fi
-            done
-            ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
-            echo "$BASENAME found \033[42m$FOUND_COUNT lines in $FILES_COUNT\033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
-        }
-    fi
+                FOUND_COUNT=$(($FOUND_COUNT + $RESULT_COUNT))
+            fi
+        done
+        ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
+        echo "$BASENAME found \033[42m$FOUND_COUNT lines in $FILES_COUNT\033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+    }
+fi

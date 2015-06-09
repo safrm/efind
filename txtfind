@@ -4,6 +4,7 @@
 #author: Miroslav Safr <miroslav.safr@gmail.com>
 VERSION=NA
 VERSION_DATE=NA
+
 #support color escape characters on different terminals
 alias echo="/bin/echo -e"
 BASENAME=`basename $0`
@@ -21,6 +22,7 @@ usage() {
     echo " -ext --extension  <ext>  ........... choose extension (default txt)"
     echo " "
 }
+
 START_TIME=`date +'%s'`
 CASE_SENS=0
 TOTAL_COUNT=0
@@ -33,6 +35,7 @@ EXT=txt
 while [ $# -gt 0 ]; do
     case "$1" in
         -h|--help) usage ; exit 0 ;;
+        -V|--version)         echo "`basename $0` ${VERSION} ${VERSION_DATE}" ; exit 0 ;;
         -cs|--case-sensitive) CASE_SENS=1 ;;
         -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
@@ -50,6 +53,7 @@ while [ $# -gt 0 ]; do
         shift
     done
     EXT_RE=`printf '\.%s$' $EXT`
+
     if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
         SEARCH_DIR="./"
     fi
@@ -57,7 +61,7 @@ while [ $# -gt 0 ]; do
     #check if terminal supports colors
     COLORS=
     if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
-        COLORS=" --color=always ";
+        COLORS=" --color=always "
     fi
 
     #case sensitive flag - by default ignore cases
@@ -65,6 +69,7 @@ while [ $# -gt 0 ]; do
     if [ $CASE_SENS -eq 1 ]; then
         CSF=""
     fi
+
     FIND_WHOLENAME_FLAG="-wholename"
     find -wholename something --version > /dev/null 2>&1
     [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
@@ -93,12 +98,14 @@ while [ $# -gt 0 ]; do
             done
             echo "$FOUND_COUNT_FN" > $FIFO &
         }
+
         #pass the value back to script
         if [ -e $FIFO ]; then
             read FOUND_COUNT_FN < $FIFO
             wait $!
         fi
     fi
+
     #content search
     if [ $SEARCH_CONTENT -eq 1 ]; then
         echo "${FILES}" | \
@@ -113,8 +120,8 @@ while [ $# -gt 0 ]; do
                     FOUND_COUNT=$(($FOUND_COUNT + 1))
                 fi
             done
+
             ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
             echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
         }
     fi
-

@@ -33,7 +33,8 @@ SEARCH_CONTENT=1
 FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
     case "$1" in
-        -h|--help) usage ; exit 0 ;;
+        -h|--help)            usage ; exit 0 ;;
+        -V|--version)         echo "`basename $0` ${VERSION} ${VERSION_DATE}" ; exit 0 ;;
         -cs|--case-sensitive) CASE_SENS=1 ;;
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
         -no|--name-only)      FILENAME_ONLY=1 ;;
@@ -45,49 +46,50 @@ while [ $# -gt 0 ]; do
                 echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1 ;
             fi
         ;;
-        esac
-        shift
+    esac
+    shift
+done
+
+if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
+    SEARCH_DIR="./"
+fi
+
+#check if terminal supports colors
+COLORS=
+if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
+    COLORS=" --color=always "
+fi
+
+#case sensitive flag - by default ignore cases
+CSF="-i "
+if [ $CASE_SENS -eq 1 ]; then
+    CSF=""
+fi
+
+FIND_WHOLENAME_FLAG="-wholename"
+find -wholename something --version > /dev/null 2>&1
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
+
+#files first
+FILES=`find $SEARCH_DIR -type f $FIND_WHOLENAME_FLAG "*\/\.git/config" -name config | grep -v '^$'`
+FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
+
+echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT (.git/config)\033[0m files CS:$CASE_SENS"
+
+#content search
+echo "${FILES}" | \
+{ while IFS='\n' read -r FILE ; do
+        RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
+        if [ -n "$RESULT" ]; then
+            if [ $FILENAME_ONLY -eq 1 ]; then
+                echo "\033[01;34m$FILE\033[0m"
+            else
+                echo "\033[01;34m$FILE\033[0m: $RESULT"
+            fi
+            FOUND_COUNT=$(($FOUND_COUNT + 1))
+        fi
     done
 
-    if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
-        SEARCH_DIR="./"
-    fi
-
-    #check if terminal supports colors
-    COLORS=
-    if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
-        COLORS=" --color=always "
-    fi
-    #case sensitive flag - by default ignore cases
-    CSF="-i "
-    if [ $CASE_SENS -eq 1 ]; then
-        CSF=""
-    fi
-
-    FIND_WHOLENAME_FLAG="-wholename"
-    find -wholename something --version > /dev/null 2>&1
-    [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
-
-    #files first
-    FILES=`find $SEARCH_DIR -type f $FIND_WHOLENAME_FLAG "*\/\.git/config" -name config | grep -v '^$'`
-    FILES_COUNT=`echo "$FILES"  | grep -v '^$'  | wc -l `
-
-    echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT (.git/config)\033[0m files CS:$CASE_SENS"
-
-    #content search
-    echo "${FILES}" | \
-    { while IFS='\n' read -r FILE ; do
-            RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
-            if [ -n "$RESULT" ]; then
-                if [ $FILENAME_ONLY -eq 1 ]; then
-                    echo "\033[01;34m$FILE\033[0m"
-                else
-                    echo "\033[01;34m$FILE\033[0m: $RESULT"
-                fi
-                FOUND_COUNT=$(($FOUND_COUNT + 1))
-            fi
-        done
-
-        ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
-        echo "$BASENAME found \033[42m$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
-    }
+    ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
+    echo "$BASENAME found \033[42m$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+}

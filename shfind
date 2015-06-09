@@ -15,6 +15,7 @@ usage() {
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
     echo " -h, --help .......................... shows command line help"
+    echo " -V, --version  ..................... prints version of scripts"    
     echo " -cs, --case-sensitive ............... case sensitive content search (by default it is insensitive)"
     echo " -nf, --no-filenames  ................ disable searching in filenames (by default enabled)"
     echo " -nc, --no-content ................... disable searching in file content (by default enabled)"
@@ -37,7 +38,8 @@ EXT=sh
 SHEBANG="#\!/bin/sh"
 while [ $# -gt 0 ]; do
     case "$1" in
-        -h|--help) usage ; exit  ;;
+        -h|--help) usage ; exit 0 ;;
+        -V|--version) echo "`basename $0` ${VERSION} ${VERSION_DATE}" ; exit 0 ;;
         -cs|--case-sensitive) CASE_SENS=1 ;;
         -nf|--no-filenames) SEARCH_FILENAMES=0 ;;
         -nc|--no-content) SEARCH_CONTENT=0 ;;
@@ -161,4 +163,3 @@ if [ $SEARCH_CONTENT -eq 1 ]; then
         echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
     }
 fi
-

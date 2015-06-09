@@ -15,6 +15,7 @@ usage() {
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
     echo " -h --help .......................... shows command line help"
+    echo " -V, --version  ..................... prints version of scripts"    
     echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
     echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
@@ -34,7 +35,8 @@ FILENAME_ONLY=0
 EXT=xml
 while [ $# -gt 0 ]; do
     case "$1" in
-        -h|--help) usage ; exit 0 ;;
+        -h|--help)            usage ; exit 0 ;;
+        -V|--version)         echo "`basename $0` ${VERSION} ${VERSION_DATE}" ; exit 0 ;;
         -cs|--case-sensitive) CASE_SENS=1 ;;
         -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
@@ -50,39 +52,39 @@ while [ $# -gt 0 ]; do
         ;;
         esac
         shift
-    done
-    EXT_RE=`printf '\.%s$' $EXT`
+done
+EXT_RE=`printf '\.%s$' $EXT`
 
-    if [ -z "$WHAT" ]; then
-        echo "You have to specify searching pattern, exiting.." ; exit 1
-    fi
+if [ -z "$WHAT" ]; then
+    echo "You have to specify searching pattern, exiting.." ; exit 1
+fi
 
-    if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
-        SEARCH_DIR="./"
-    fi
+if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
+    SEARCH_DIR="./"
+fi
 
-    #check dependencies xml2 package
-    if [ ! -e "/usr/bin/xml2" ]
-    then
-        echo "Not installed xml2, exiting.."
-        exit 1
-    fi
+#check dependencies xml2 package
+if [ ! -e "/usr/bin/xml2" ]
+then
+    echo "Not installed xml2, exiting.."
+    exit 1
+fi
 
-    #check if terminal supports colors
-    COLORS=
-    if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
-        COLORS=" --color=always "
-    fi
+#check if terminal supports colors
+COLORS=
+if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
+    COLORS=" --color=always "
+fi
 
-    #case sensitive flag - by default ignore cases
-    CSF="-i "
-    if [ $CASE_SENS -eq 1 ]; then
-        CSF=""
-    fi
+#case sensitive flag - by default ignore cases
+CSF="-i "
+if [ $CASE_SENS -eq 1 ]; then
+    CSF=""
+fi
 
-    FIND_WHOLENAME_FLAG="-wholename"
-    find -wholename something --version > /dev/null 2>&1
-    [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
+FIND_WHOLENAME_FLAG="-wholename"
+find -wholename something --version > /dev/null 2>&1
+[ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
     FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "$EXT_RE"`
     FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
