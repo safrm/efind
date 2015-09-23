@@ -15,7 +15,7 @@ usage() {
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
     echo " -h --help .......................... shows command line help"
-    echo " -V, --version  ..................... prints version of scripts"    
+    echo " -V, --version  ..................... prints version of scripts"
     echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
     echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
     echo " -nc --no-content ................... disable searching in file content (by default enabled)"
@@ -41,11 +41,11 @@ while [ $# -gt 0 ]; do
         -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
         -no|--name-only)      FILENAME_ONLY=1 ;;
-        -ext|--extension)     shift ; EXT=$1 ;;
+        -ext|--extension)     shift ; EXT="$1" ;;
         *)  if [ -z "$WHAT" ]; then
-                WHAT=$1
+                WHAT="$1"
             elif [ -z "$SEARCH_DIR" ]; then
-                SEARCH_DIR=$1
+                SEARCH_DIR="$1"
             else
                 echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1
             fi
@@ -86,18 +86,18 @@ mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then
     echo "${FILES}" | \
     { while IFS='\n' read -r FILE ; do
-            # only file basename
-            RESULT=`echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
-            if [ -n "$RESULT" ]; then
-                if [ $FILENAME_ONLY -eq 1 ]; then
-                    echo "\033[01;34m$FILE\033[0m"
-                else
-                    echo "\033[01;34m$FILE\033[0m: $RESULT"
-                fi
-                FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1))
+	# only file basename
+        RESULT=`echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+        if [ -n "$RESULT" ]; then
+            if [ $FILENAME_ONLY -eq 1 ]; then
+                echo "\033[01;34m$FILE\033[0m"
+            else
+                echo "\033[01;34m$FILE\033[0m: $RESULT"
             fi
-        done
-        echo "$FOUND_COUNT_FN" > $FIFO &
+            FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1))
+        fi
+     done
+     echo "$FOUND_COUNT_FN" > $FIFO &
     }
 
     #pass the value back to script
@@ -111,18 +111,18 @@ fi
 if [ $SEARCH_CONTENT -eq 1 ]; then
     echo "${FILES}" | \
     { while IFS='\n' read -r FILE ; do
-            RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
-            if [ -n "$RESULT" ]; then
-                if [ $FILENAME_ONLY -eq 1 ]; then
-                    echo "\033[01;34m$FILE\033[0m"
-                else
-                    echo "\033[01;34m$FILE\033[0m: $RESULT"
-                fi
-                FOUND_COUNT=$(($FOUND_COUNT + 1))
-            fi
-        done
+         RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
+         if [ -n "$RESULT" ]; then
+             if [ $FILENAME_ONLY -eq 1 ]; then
+                 echo "\033[01;34m$FILE\033[0m"
+             else
+                 echo "\033[01;34m$FILE\033[0m: $RESULT"
+             fi
+             FOUND_COUNT=$(($FOUND_COUNT + 1))
+          fi
+     done
 
-        ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
-        echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+     ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
+     echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
     }
 fi
