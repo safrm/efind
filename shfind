@@ -82,12 +82,12 @@ find -wholename something --version > /dev/null 2>&1
 
 #sh files first
 ALLFILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/\.git*" | grep -v '^$'`
-FILES=`echo "$ALLFILES" | grep -i "$EXT_RE"`
-SHFILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
+FILES=`printf "$ALLFILES" | grep -i "$EXT_RE"`
+SHFILES_COUNT=`printf "$FILES" | grep -v '^$' | wc -l`
 #echo "$FILES \n-----------"
 
 #files without extension
-NOEX_FILES=`echo "$ALLFILES" | grep -v "[^/]*\.[a-z0-9]*$" `
+NOEX_FILES=`printf "$ALLFILES" | grep -v "[^/]*\.[a-z0-9]*$" `
 #echo "$NOEX_FILES \n-----------"
 
 #filter out non-script ones - don't support whitespaces atm
@@ -95,7 +95,7 @@ if [ -n "${NOEX_FILES}" ]; then
     FIFO2=/tmp/NOEX_FILE_SCRIPTS.$$
     trap "rm -f $FIFO2" 0
     mkfifo $FIFO2 2> /dev/null
-    echo "${NOEX_FILES}" | while IFS='\n' read -r FILE ; do
+    printf "$NOEX_FILES" | while IFS='\n' read -r FILE ; do
         if grep -r -q "$SHEBANG" "$FILE" ; then
             echo "$FILE" >> $FIFO2 &
         fi
@@ -108,12 +108,12 @@ if [ -n "${NOEX_FILES}" ]; then
     fi
 fi
 #echo "$NOEX_FILE_SCRIPTS \n-----------"
-NOEX_COUNT=`echo "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
+NOEX_COUNT=`printf "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
 
 #put them together
 FILES="$FILES\n$NOEX_FILE_SCRIPTS"
-FILES=`echo "$FILES" | grep -v '^$'`
-FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
+FILES=`printf "$FILES" | grep -v '^$'`
+FILES_COUNT=`printf "$FILES" | grep -v '^$' | wc -l`
 echoc "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.$EXT/-)\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
@@ -121,10 +121,10 @@ FIFO=/tmp/FOUND_COUNT_FN.$$
 trap "rm -f $FIFO" 0
 mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then
-    echo "${FILES}" | \
+    printf "$FILES" | \
     { while IFS='\n' read -r FILE ; do
             # only file basename
-            RESULT=`echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+            RESULT=`printf "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
             if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
                     echoc "\033[01;34m$FILE\033[0m"
@@ -146,7 +146,7 @@ fi
 
 #content search
 if [ $SEARCH_CONTENT -eq 1 ]; then
-    echo "${FILES}" | \
+    printf "$FILES" | \
     { while IFS='\n' read -r FILE ; do
             RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
             if [ -n "$RESULT" ]; then
