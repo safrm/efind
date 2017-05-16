@@ -6,21 +6,21 @@ VERSION=NA
 VERSION_DATE=NA
 
 #support color escape characters on different terminals
-alias echo="/bin/echo -e"
+alias echoc="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
-    echo "$BASENAME ${VERSION} - extended recursive search for html files (htm,html)"
+    echo "$BASENAME $VERSION - extended recursive search for html files (htm,html)"
     echo " http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
-    echo " PATTERN ............................ string (requires \"\" if contains spaces) "
+    echo " PATTERN ............................ string (requires \"\" if contains spaces)"
     echo " options: "
     echo " -h --help .......................... shows command line help"
-    echo " -V, --version  ..................... prints version of scripts"    
-    echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
-    echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
-    echo " -nc --no-content ................... disable searching in file content (by default enabled)"
-    echo " -no --name-only .................... print only filenames (by default disabled)"
-    echo
+    echo " -V, --version  ..................... prints version of scripts"
+    echo " -cs --case-sensitive ............... case sensitive content search (def: insensitive)"
+    echo " -nf --no-filenames ................. disable searching in filenames (def: enabled)"
+    echo " -nc --no-content ................... disable searching in file content (def: enabled)"
+    echo " -no --name-only .................... print only filenames (def: disabled)"
+    echo " "
 }
 
 START_TIME=`date +'%s'`
@@ -34,7 +34,7 @@ FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
     case "$1" in
         -h|--help)            usage ; exit 0 ;;
-        -V|--version)         echo "`basename $0` ${VERSION} ${VERSION_DATE}" ; exit 0 ;;
+        -V|--version)         echo "$BASENAME $VERSION $VERSION_DATE" ; exit 0 ;;
         -cs|--case-sensitive) CASE_SENS=1 ;;
         -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
@@ -80,7 +80,7 @@ find -wholename something --version > /dev/null 2>&1
 
 FILES=$(find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" -printf '%p\n' | grep -i -E -Z '\.(html|htm)$')
 FILES_COUNT=`echo "$FILES" | grep -v '^$' | wc -l`
-echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT htm,html\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES "
+echoc "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT htm,html\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES "
 
 #filenames search
 FIFO=/tmp/FOUND_COUNT_FN.$$
@@ -93,9 +93,9 @@ if [ $SEARCH_FILENAMES -eq 1 ]; then
             RESULT=`echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
             if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
-                    echo "\033[01;34m$FILE\033[0m"
+                    echoc "\033[01;34m$FILE\033[0m"
                 else
-                    echo "\033[01;34m$FILE\033[0m: $RESULT"
+                    echoc "\033[01;34m$FILE\033[0m: $RESULT"
                 fi
                 FOUND_COUNT_FN=$(($FOUND_COUNT_FN + 1))
             fi
@@ -117,15 +117,15 @@ if [ $SEARCH_CONTENT -eq 1 ]; then
             RESULT=`html2text "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
             if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
-                    echo "\033[01;34m$FILE\033[0m"
+                    echoc "\033[01;34m$FILE\033[0m"
                 else
-                    echo "\033[01;34m$FILE\033[0m: $RESULT"
+                    echoc "\033[01;34m$FILE\033[0m: $RESULT"
                 fi
                 FOUND_COUNT=$(($FOUND_COUNT + 1))
             fi
         done
 
         ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
-        echo "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+        echoc "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
     }
 fi

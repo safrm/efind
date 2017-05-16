@@ -6,21 +6,21 @@ VERSION=NA
 VERSION_DATE=NA
 
 #support color escape characters on different terminals
-alias echo="/bin/echo -e"
+alias echoc="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
-    echo "$BASENAME ${VERSION} - extended recursive search for/in TODO files"
+    echo "$BASENAME $VERSION - extended recursive search for/in TODO files"
     echo " http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
-    echo " options: "
+    echo " Options: "
     echo " -h --help .......................... shows command line help"
-    echo " -V, --version  ..................... prints version of scripts"    
-    echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
-    echo " -nf --no-filenames ................. disable searching in filenames (by default enabled)"
-    echo " -nc --no-content ................... disable searching in file content (by default enabled)"
-    echo " -no --name-only .................... print only filenames (by default disabled)"
-    echo " -fl --filter-lines <tag> ........... print only lines which starts with tag (by default empty)"
+    echo " -V, --version  ..................... prints version of scripts"
+    echo " -cs --case-sensitive ............... case sensitive content search (def: insensitive)"
+    echo " -nf --no-filenames ................. disable searching in filenames (def: enabled)"
+    echo " -nc --no-content ................... disable searching in file content (def: enabled)"
+    echo " -no --name-only .................... print only filenames (def: disabled)"
+    echo " -fl --filter-lines <tag> ........... print only lines which starts with tag (def: empty)"
     echo " -d --done .......................... show only done (by default no filter) ('^DONE' or '^- [x]')"
     echo " -t --todo .......................... show only todo (by default no filter) ('^TODO' or '^- [ ]' or '^- ')"
     echo " "
@@ -37,7 +37,7 @@ FILENAME_ONLY=0
 while [ $# -gt 0 ]; do
     case "$1" in
         -h|--help)            usage ; exit 0 ;;
-        -V|--version)         echo "`basename $0` ${VERSION} ${VERSION_DATE}" ; exit 0 ;;
+        -V|--version)         echo "$BASENAME $VERSION $VERSION_DATE" ; exit 0 ;;
         -cs|--case-sensitive) CASE_SENS=1 ;;
         -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
@@ -90,14 +90,14 @@ find -wholename something --version > /dev/null 2>&1
 
 FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "todo"`
 FILES_COUNT=`echo "$FILES"| grep -v '^$'  | wc -l`
-echo "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT \033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
+echoc "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT \033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 #filenames search
 if [ $SEARCH_FILENAMES -eq 1 ]; then
     echo "${FILES}" | \
     { while IFS='\n' read -r FILE ; do
             # only file basename
             if [ $FILENAME_ONLY -eq 1 ]; then
-                echo "\033[01;34m$FILE\033[0m"
+                echoc "\033[01;34m$FILE\033[0m"
             fi
         done
     }
@@ -111,14 +111,14 @@ if [ $SEARCH_CONTENT -eq 1 ]; then
             RESULT_COUNT=`echo "$RESULT" | wc -l`
             if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
-                    echo "\033[01;34m$FILE\033[0m"
+                    echoc "\033[01;34m$FILE\033[0m"
                 else
-                    echo "\033[01;34m$FILE\033[0m: $RESULT"
+                    echoc "\033[01;34m$FILE\033[0m: $RESULT"
                 fi
                 FOUND_COUNT=$(($FOUND_COUNT + $RESULT_COUNT))
             fi
         done
         ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
-        echo "$BASENAME found \033[42m$FOUND_COUNT lines in $FILES_COUNT\033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
+        echoc "$BASENAME found \033[42m$FOUND_COUNT lines in $FILES_COUNT\033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
     }
 fi

@@ -5,20 +5,18 @@
 VERSION=NA
 VERSION_DATE=NA
 
-#support color escape characters on different terminals
-alias echo="/bin/echo -e"
 BASENAME=`basename $0`
 usage() {
-    echo "$BASENAME ${VERSION} - extended recursive search for sh scripts (sh, sh scripts without extension)"
+    echo "$BASENAME $VERSION - extended recursive search for sh scripts (sh, sh scripts without extension)"
     echo " http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
     echo " options: "
     echo " -h --help .......................... shows command line help"
-    echo " -cs --case-sensitive ............... case sensitive content search (by default it is insensitive)"
-    echo " -nf --no-filenames  ................ disable searching in filenames (by default enabled)"
-    echo " -nc --no-content ................... disable searching in file content (by default enabled)"
-    echo " -no --name-only .................... print only filenames (by default disabled)"
+    echo " -cs --case-sensitive ............... case sensitive content search (def: insensitive)"
+    echo " -nf --no-filenames  ................ disable searching in filenames (def: enabled)"
+    echo " -nc --no-content ................... disable searching in file content (def: enabled)"
+    echo " -no --name-only .................... print only filenames (def: disabled)"
     echo " "
 }
 
