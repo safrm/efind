@@ -80,7 +80,7 @@ while [ $# -gt 0 ]; do
 
     #filenames search
     FIFO=/tmp/FOUND_COUNT_FN.$$
-    trap 'rm -f $FIFO' 0
+    trap "rm -f $FIFO" 0
     mkfifo $FIFO 2> /dev/null
     if [ $SEARCH_FILENAMES -eq 1 ]; then
         echo "${FILES}" | \
