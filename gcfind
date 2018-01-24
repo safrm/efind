@@ -6,7 +6,7 @@ VERSION=NA
 VERSION_DATE=NA
 
 #support color escape characters on different terminals
-alias echoc="/bin/echo -e"
+alias echoc="$(which echo) -e"
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME $VERSION - extended recursive search for git configs"
