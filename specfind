@@ -57,9 +57,8 @@ fi
 
 #check if terminal supports colors
 COLORS=
-if [ -x /usr/bin/tput ] && tput setaf > /dev/null ; then
-    COLORS=" --color=always "
-fi
+tput setaf 1>/dev/null 2>&1 && COLORS=" --color=always "
+
 #case sensitive flag - by default ignore cases
 CSF="-i "
 if [ $CASE_SENS -eq 1 ]; then
