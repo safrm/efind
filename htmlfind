@@ -22,6 +22,7 @@ usage() {
     echo " -no --name-only .................... print only filenames (def: disabled)"
     echo " "
 }
+die() { echo "ERROR: $*\n" ; exit 1 ; }
 
 START_TIME=`date +'%s'`
 CASE_SENS=0
@@ -44,7 +45,7 @@ while [ $# -gt 0 ]; do
             elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1
             else
-                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ;  exit 1
+                die "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."
             fi
         ;;
     esac
@@ -60,11 +61,7 @@ COLORS=
 tput setaf 1>/dev/null 2>&1 && COLORS=" --color=always "
 
 #check dependencies
-if [ ! -e "/usr/bin/html2text" ]
-then
-    echo "Not installed html2text, exiting.."
-    exit 1
-fi
+command -v html2text 1>/dev/null 2>&1 || die "Not installed html2text, exiting.."
 
 #case sensitive flag - by default ignore cases
 CSF="-i "

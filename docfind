@@ -23,6 +23,7 @@ usage() {
     echo " -no --name-only .................... print only filenames (def: disabled)"
     echo " "
 }
+die() { echo "ERROR: $*\n" ; exit 1 ; }
 
 START_TIME=`date +'%s'`
 CASE_SENS=0
@@ -45,26 +46,21 @@ while [ $# -gt 0 ]; do
             elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1
             else
-                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1
+                die "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."
             fi
         ;;
     esac
     shift
 done
 
-if [ -z "$WHAT" ]; then
-    echo "You have to specify searching pattern, exiting.." ; exit 1
-fi
+[ -z "$WHAT" ] && die "You have to specify searching pattern, exiting.."
 
 if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
     SEARCH_DIR="./"
 fi
 
 #check dependencies
-if [ ! -e "/usr/bin/unoconv" ]; then
-    echo "Not installed unoconv, exiting.."
-    exit 1
-fi
+command -v unoconv 1>/dev/null 2>&1 || die "Not installed unoconv, exiting.."
 
 #check if terminal supports colors
 COLORS=

@@ -23,6 +23,7 @@ usage() {
     echo " -ext --extension  <ext>  ........... choose extension (def: xml)"
     echo " "
 }
+die() { echo "ERROR: $*\n" ; exit 1 ; }
 
 START_TIME=`date +'%s'`
 CASE_SENS=0
@@ -47,7 +48,7 @@ while [ $# -gt 0 ]; do
             elif [ -z "$SEARCH_DIR" ]; then
                 SEARCH_DIR=$1 ;
             else
-                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1
+                die "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."
             fi
         ;;
         esac
@@ -55,20 +56,14 @@ while [ $# -gt 0 ]; do
 done
 EXT_RE=`printf '\.%s$' $EXT`
 
-if [ -z "$WHAT" ]; then
-    echo "You have to specify searching pattern, exiting.." ; exit 1
-fi
+[ -z "$WHAT" ] && die "You have to specify searching pattern, exiting.."
 
 if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
     SEARCH_DIR="./"
 fi
 
 #check dependencies xml2 package
-if [ ! -e "/usr/bin/xml2" ]
-then
-    echo "Not installed xml2, exiting.."
-    exit 1
-fi
+command -v xml2 1>/dev/null 2>&1 || die "Not installed xml2, exiting.."
 
 #check if terminal supports colors
 COLORS=

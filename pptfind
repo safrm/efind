@@ -22,6 +22,7 @@ usage() {
     echo " -no --name-only .................... print only filenames (def:disabled)"
     echo " "
 }
+die() { echo "ERROR: $*\n" ; exit 1 ; }
 
 START_TIME=`date +'%s'`
 CASE_SENS=0
@@ -56,9 +57,7 @@ if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
 fi
 
 #check dependencies
-if [ ! -e "/usr/bin/unoconv" ]; then
-    echo "Not installed unoconv, exiting.." ;  exit 1
-fi
+command -v unoconv 1>/dev/null 2>&1 || die "Not installed unoconv, exiting.."
 
 #check if terminal supports colors
 COLORS=

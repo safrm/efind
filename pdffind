@@ -22,6 +22,7 @@ usage() {
     echo " -no --name-only .................... print only filenames (def: disabled)"
     echo " "
 }
+die() { echo "ERROR: $*\n" ; exit 1 ; }
 
 START_TIME=`date +'%s'`
 CASE_SENS=0
@@ -56,9 +57,7 @@ if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
 fi
 
 #check dependencies poppler-utils package
-if [ ! -e "/usr/bin/pdftotext" ]; then
-    echo "Not installed xml2, exiting.." ; exit 1
-fi
+command -v pdftotext 1>/dev/null 2>&1 || die "Not installed pdftotext (poppler-utils), exiting.."
 
 #check if terminal supports colors
 COLORS=
