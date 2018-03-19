@@ -74,12 +74,12 @@ find -wholename something --version > /dev/null 2>&1
 [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
 
-FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" -printf '%p\n' | grep -i -Z "\.pdf\$"`
+FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" -print | grep -i -Z "\.pdf\$"`
 FILES_COUNT=`printf "$FILES"| grep -v '^$' | wc -l`
 echoc "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT pdf\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
-FIFO=/tmp/FOUND_COUNT_FN.$$
+FIFO=${TMPDIR:-/tmp}/FOUND_COUNT_FN.$$
 trap "rm -f $FIFO" 0
 mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then

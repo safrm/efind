@@ -91,7 +91,7 @@ NOEX_FILES=`printf "$ALLFILES" | grep -v "[^/]*\.[a-z0-9]*$" `
 
 #filter out non-script ones - don't support whitespaces atm
 if [ -n "${NOEX_FILES}" ]; then
-    FIFO2=/tmp/NOEX_FILE_SCRIPTS.$$
+    FIFO2=${TMPDIR:-/tmp}/NOEX_FILE_SCRIPTS.$$
     trap "rm -f $FIFO2" 0
     mkfifo $FIFO2 2> /dev/null
     printf "$NOEX_FILES" | while IFS='\n' read -r FILE ; do
@@ -116,7 +116,7 @@ FILES_COUNT=`printf "$FILES" | grep -v '^$' | wc -l`
 echoc "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m($SHFILES_COUNT/$NOEX_COUNT)=$FILES_COUNT (.$EXT/-)\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
-FIFO=/tmp/FOUND_COUNT_FN.$$
+FIFO=${TMPDIR:-/tmp}/FOUND_COUNT_FN.$$
 trap "rm -f $FIFO" 0
 mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then
