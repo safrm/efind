@@ -6,7 +6,7 @@ VERSION=NA
 VERSION_DATE=NA
 
 #support color escape characters on different terminals
-alias echo="/bin/echo -e"
+alias echo="$(which echo) -e"
 BASENAME=`basename $0`
 usage() {
     echo "$BASENAME ${VERSION} - extended recursive search testing script "
