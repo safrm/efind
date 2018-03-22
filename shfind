@@ -80,13 +80,13 @@ find -wholename something --version > /dev/null 2>&1
 [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
 #sh files first
-ALLFILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/\.git*" | grep -v '^$'`
-FILES=`printf "$ALLFILES" | grep -i "$EXT_RE"`
-SHFILES_COUNT=`printf "$FILES" | grep -v '^$' | wc -l`
+ALLFILES=$(find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/\.git*" | grep -v '^$')
+FILES=$(echo "$ALLFILES" | grep -i "$EXT_RE")
+SHFILES_COUNT=$(echo "$FILES" | grep -v '^$' | wc -l)
 #echo "$FILES \n-----------"
 
 #files without extension
-NOEX_FILES=`printf "$ALLFILES" | grep -v "[^/]*\.[a-z0-9]*$" `
+NOEX_FILES=$(echo "$ALLFILES" | grep -v "[^/]*\.[a-z0-9]*$")
 #echo "$NOEX_FILES \n-----------"
 
 #filter out non-script ones - don't support whitespaces atm
@@ -102,12 +102,12 @@ if [ -n "${NOEX_FILES}" ]; then
 
     #pass the value back to script
     if [ -e $FIFO2 ]; then
-        NOEX_FILE_SCRIPTS=`cat $FIFO2`
+        NOEX_FILE_SCRIPTS=$(cat $FIFO2)
         wait $!
     fi
 fi
 #echo "$NOEX_FILE_SCRIPTS \n-----------"
-NOEX_COUNT=`printf "$NOEX_FILE_SCRIPTS"  | grep -v '^$' | wc -l`
+NOEX_COUNT=$(echo "$NOEX_FILE_SCRIPTS" | grep -v '^$' | wc -l)
 
 #put them together
 FILES="$FILES\n$NOEX_FILE_SCRIPTS"
@@ -120,10 +120,10 @@ FIFO=${TMPDIR:-/tmp}/FOUND_COUNT_FN.$$
 trap "rm -f $FIFO" 0
 mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then
-    printf "$FILES" | \
+    echo "$FILES" | \
     { while IFS='\n' read -r FILE ; do
             # only file basename
-            RESULT=`printf "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+        RESULT=$(echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT")
             if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
                     echoc "\033[01;34m$FILE\033[0m"
@@ -145,9 +145,9 @@ fi
 
 #content search
 if [ $SEARCH_CONTENT -eq 1 ]; then
-    printf "$FILES" | \
+        echo "$FILES" | \
     { while IFS='\n' read -r FILE ; do
-            RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
+         RESULT=$(cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT")
             if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
                     echoc "\033[01;34m$FILE\033[0m"

@@ -69,15 +69,15 @@ find -wholename something --version > /dev/null 2>&1
 [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
 #files first
-FILES=`find $SEARCH_DIR -type f $FIND_WHOLENAME_FLAG "*\/\.git/config" -name config | grep -v '^$'`
-FILES_COUNT=`printf "$FILES" | grep -v '^$' | wc -l`
+FILES=$(find $SEARCH_DIR -type f $FIND_WHOLENAME_FLAG "*\/\.git/config" -name config | grep -v '^$')
+FILES_COUNT=$(echo "$FILES" | grep -v '^$' | wc -l)
 
 echoc "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT (.git/config)\033[0m files CS:$CASE_SENS"
 
 #content search
-printf "$FILES" | \
+echo "$FILES" | \
 { while IFS='\n' read -r FILE ; do
-        RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
+        RESULT=$(cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT")
         if [ -n "$RESULT" ]; then
             if [ $FILENAME_ONLY -eq 1 ]; then
                 echoc "\033[01;34m$FILE\033[0m"
