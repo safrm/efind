@@ -32,7 +32,7 @@ FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
 SEARCH_CONTENT=1
 FILENAME_ONLY=0
-EXT="h$\|hpp\|cpp\|cxx\|cc"
+EXT="h\|hpp\|cpp\|cxx\|cc"
 while [ $# -gt 0 ]; do
     case "$1" in
         -h|--help)            usage ; exit 0 ;;
@@ -53,8 +53,8 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
-EXT_RE=`printf '\.%s$' $EXT`
-
+EXT_RE=$(printf '\.\(%s\)$' $EXT)
+#echo "$EXT_RE"
 if [ -z "$SEARCH_DIR" ] || [ ! -e "$SEARCH_DIR" ]; then
    SEARCH_DIR="./"
 fi
@@ -73,8 +73,8 @@ FIND_WHOLENAME_FLAG="-wholename"
 find -wholename something --version > /dev/null 2>&1
 [ $? -ne 0 ] && FIND_WHOLENAME_FLAG="-path"
 
-FILES=`find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" |grep -i "$EXT_RE"`
-FILES_COUNT=`printf "$FILES" | grep -v '^$' | wc -l`
+FILES=$(find $SEARCH_DIR -type f -not $FIND_WHOLENAME_FLAG "*\/.git*" | grep -i "$EXT_RE")
+FILES_COUNT=$(echo "$FILES" | grep -v '^$' | wc -l)
 echoc "searching '\033[32m$WHAT\033[0m' in \033[01;34m$SEARCH_DIR\033[0m \033[46m$FILES_COUNT $EXT\033[0m files CS:$CASE_SENS FS:$SEARCH_FILENAMES"
 
 #filenames search
@@ -82,10 +82,10 @@ FIFO=${TMPDIR:-/tmp}/FOUND_COUNT_FN.$$
 trap "rm -f $FIFO" 0
 mkfifo $FIFO 2> /dev/null
 if [ $SEARCH_FILENAMES -eq 1 ]; then
-    printf "$FILES" | \
+    echo "$FILES" | \
     { while IFS='\n' read -r FILE ; do
-	# only file basename
-        RESULT=`printf "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+        # only file basename
+        RESULT=`echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
         if [ -n "$RESULT" ]; then
             if [ $FILENAME_ONLY -eq 1 ]; then
                 echoc "\033[01;34m$FILE\033[0m"
@@ -107,7 +107,7 @@ fi
 
 #content search
 if [ $SEARCH_CONTENT -eq 1 ]; then
-    printf "$FILES" | \
+    echo "$FILES" | \
     { while IFS='\n' read -r FILE ; do
          RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
          if [ -n "$RESULT" ]; then
