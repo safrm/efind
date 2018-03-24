@@ -20,7 +20,7 @@ usage() {
     echo " -nf --no-filenames ................. disable searching in filenames (def: enabled)"
     echo " -nc --no-content ................... disable searching in file content (def: enabled)"
     echo " -no --name-only .................... print only filenames (def: disabled)"
-    echo " -ext --extension  <ext>  ........... choose extension (def: h,hpp,cpp,cxx,cc)"
+    echo " -ext --extension  <ext>  ........... choose extension (def: h,hpp,cpp,cxx,c,cc)"
     echo " "
 }
 
@@ -32,7 +32,7 @@ FOUND_COUNT_FN=0
 SEARCH_FILENAMES=1
 SEARCH_CONTENT=1
 FILENAME_ONLY=0
-EXT="h\|hpp\|cpp\|cxx\|cc"
+EXT="h\|hpp\|cpp\|cxx\|cc|c"
 while [ $# -gt 0 ]; do
     case "$1" in
         -h|--help)            usage ; exit 0 ;;
