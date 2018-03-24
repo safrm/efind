@@ -13,7 +13,7 @@ usage() {
     echo " http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
-    echo " options: "
+    echo " Options: "
     echo " -h --help .......................... shows command line help"
     echo " -V, --version  ..................... prints version of scripts"
     echo " -cs --case-sensitive ............... case sensitive content search (def: insensitive)"
@@ -42,11 +42,11 @@ while [ $# -gt 0 ]; do
         -nf|--no-filenames)   SEARCH_FILENAMES=0 ;;
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
         -no|--name-only)      FILENAME_ONLY=1 ;;
-        -ext|--extension)     shift ; EXT=$1 ;;
+        -ext|--extension)     shift ; EXT="$1" ;;
         *)  if [ -z "$WHAT" ]; then
-                WHAT=$1 ;
+                WHAT="$1"
             elif [ -z "$SEARCH_DIR" ]; then
-                SEARCH_DIR=$1 ;
+                SEARCH_DIR="$1"
             else
                 die "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."
             fi

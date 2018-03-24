@@ -9,7 +9,7 @@ VERSION_DATE=NA
 alias echoc="$(which echo) -e"
 BASENAME=`basename $0`
 usage() {
-    echo "$BASENAME $VERSION - extended recursive search for sh scripts (sh, sh scripts without extension)"
+    echo "$BASENAME $VERSION - extended recursive search for shell scripts (sh, sh scripts without extension)"
     echo " http://safrm.net/projects/efind/"
     echo "Usage:$BASENAME [OPTIONS]... PATTERN [SEARCHING_DIR]"
     echo " PATTERN ............................ string (requires \"\" if contains spaces) "
@@ -44,14 +44,13 @@ while [ $# -gt 0 ]; do
         -nf|--no-filenames) SEARCH_FILENAMES=0 ;;
         -nc|--no-content) SEARCH_CONTENT=0 ;;
         -no|--name-only)  FILENAME_ONLY=1 ;;
-        -ext|--extension) shift ; EXT=$1 ;;
+        -ext|--extension) shift ; EXT="$1" ;;
         -sb|--shebang) shift ; SHEBANG="$1" ;;
         -b|--bash) EXT=bash ; SHEBANG="#\!/bin/bash" ;;
-        *)
-            if [ -z "$WHAT" ]; then
-                WHAT=$1
+        *)  if [ -z "$WHAT" ]; then
+                WHAT="$1"
             elif [ -z "$SEARCH_DIR" ]; then
-                SEARCH_DIR=$1
+                SEARCH_DIR="$1"
             else
                 echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1
             fi

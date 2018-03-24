@@ -16,6 +16,7 @@ usage() {
     echo "  SEARCHING_DIR ......... root directory for searching (def: current)"
     echo "Options: "
     echo "  -h --help ............. shows command line help"
+    echo " -V, --version  ......... prints version of scripts"
     echo "  -cs --case-sensitive .. case sensitive content search (def:insensitive)"
     echo "  -nf --no-filenames .... disable searching in filenames (def: enabled)"
     echo "  -nc --no-content ...... disable searching in file content (def: enabled)"
@@ -39,11 +40,11 @@ while [ $# -gt 0 ]; do
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
         -no|--name-only)      FILENAME_ONLY=1 ;;
         *)  if [ -z "$WHAT" ]; then
-                WHAT=$1
+                WHAT="$1"
             elif [ -z "$SEARCH_DIR" ]; then
-                SEARCH_DIR=$1
+                SEARCH_DIR="$1"
             else
-                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1 ;
+                echo "There can be only 2 arguments without <WHAT> <WHERE>, exiting.." ; exit 1
             fi
         ;;
     esac

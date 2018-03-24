@@ -42,9 +42,9 @@ while [ $# -gt 0 ]; do
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
         -no|--name-only)      FILENAME_ONLY=1 ;;
         *)  if [ -z "$WHAT" ]; then
-                WHAT=$1
+                WHAT="$1"
             elif [ -z "$SEARCH_DIR" ]; then
-                SEARCH_DIR=$1
+                SEARCH_DIR="$1"
             else
                 die "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."
             fi
@@ -88,7 +88,7 @@ if [ $SEARCH_FILENAMES -eq 1 ]; then
     echo "$FILES" | \
     {   while IFS='\n' read -r FILE ; do
             # only file basename
-            RESULT=`echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+            RESULT=$(echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT")
             if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
                     echoc "\033[01;34m$FILE\033[0m"
@@ -112,7 +112,7 @@ fi
 if [ $SEARCH_CONTENT -eq 1 ]; then
     echo "$FILES" | \
     { while IFS='\n' read -r FILE ; do
-            RESULT=`unoconv  -f txt --stdout  "$FILE"  2> /dev/null |  grep $COLORS $CSF -E "$WHAT"`
+            RESULT=$(unoconv  -f txt --stdout  "$FILE"  2> /dev/null | grep $COLORS $CSF -E "$WHAT")
             if [ -n "$RESULT" ]; then
                 if [ $FILENAME_ONLY -eq 1 ]; then
                     echoc "\033[01;34m$FILE\033[0m"
@@ -127,4 +127,3 @@ if [ $SEARCH_CONTENT -eq 1 ]; then
         echoc "$BASENAME found \033[42m$FOUND_COUNT_FN/$FOUND_COUNT from $FILES_COUNT \033[0m files, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
     }
 fi
-

@@ -41,9 +41,9 @@ while [ $# -gt 0 ]; do
         -nc|--no-content)     SEARCH_CONTENT=0 ;;
         -no|--name-only)      FILENAME_ONLY=1 ;;
         *)  if [ -z "$WHAT" ]; then
-                WHAT=$1
+                WHAT="$1"
             elif [ -z "$SEARCH_DIR" ]; then
-                SEARCH_DIR=$1
+                SEARCH_DIR="$1"
             else
                 die "There can be only 2 arguments without <WHAT> <WHERE>, exiting.."
             fi

@@ -85,7 +85,7 @@ if [ $SEARCH_FILENAMES -eq 1 ]; then
     echo "$FILES" | \
     { while IFS='\n' read -r FILE ; do
         # only file basename
-        RESULT=`echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT"`
+        RESULT=$(echo "$FILE" | sed 's|.*/||g' | grep $COLORS $CSF -E "$WHAT")
         if [ -n "$RESULT" ]; then
             if [ $FILENAME_ONLY -eq 1 ]; then
                 echoc "\033[01;34m$FILE\033[0m"
@@ -109,7 +109,7 @@ fi
 if [ $SEARCH_CONTENT -eq 1 ]; then
     echo "$FILES" | \
     { while IFS='\n' read -r FILE ; do
-         RESULT=`cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT"`
+         RESULT=$(cat "$FILE" 2> /dev/null | grep $COLORS $CSF -E "$WHAT")
          if [ -n "$RESULT" ]; then
              if [ $FILENAME_ONLY -eq 1 ]; then
                  echoc "\033[01;34m$FILE\033[0m"
