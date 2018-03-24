@@ -178,4 +178,4 @@ testok
 echo "tests finished OK"
 ELAPSED_TIME=$((`date +'%s'` - $START_TIME))
 echo "$BASENAME checked \033[42m$(($TCID - 10)) tests sets for `echo $SCRIPTS| tr "," "\n" | wc -l` scripts\033[0m, took:$(($ELAPSED_TIME/60)) min $(($ELAPSED_TIME%60)) s"
-
+[ -e "./perf_results.txt" ] && echo "$(git describe) $(($TCID - 10)) $ELAPSED_TIME" >> ./perf_results.txt
